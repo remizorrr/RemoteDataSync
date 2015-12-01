@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6EFA02ADB2C13B872F991736B20ED79589FDE0A8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6EFA02ADB2C13B872F991736B20ED79589FDE0A8" : 0,
+    "9D9408DE29814A85D4F4288F27901FA74F87FF91" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "E0FA1CD1-47BD-4CC0-8CB9-D6ADA6B353F8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6EFA02ADB2C13B872F991736B20ED79589FDE0A8" : "RemoteDataSync\/",
+    "9D9408DE29814A85D4F4288F27901FA74F87FF91" : ".."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RemoteDataSync",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "RemoteDataSync\/RemoteDataSync.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/remizorrr\/RemoteDataSync.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6EFA02ADB2C13B872F991736B20ED79589FDE0A8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/photokeeper\/Photo_Keeper_iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9D9408DE29814A85D4F4288F27901FA74F87FF91"
+    }
+  ]
+}
