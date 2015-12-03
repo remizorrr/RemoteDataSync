@@ -16,4 +16,7 @@ FOUNDATION_EXPORT const unsigned char RemoteDataSyncVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <RemoteDataSync/PublicHeader.h>
 
-
+#import "RDSManager.h"
+#import "NSManagedObject+RDS.h"
+#import "RDSMapping.h"
+#import "RDSObjectFactory.h"

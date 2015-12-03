@@ -56,7 +56,7 @@
     {
         return _managedObjectModel;
     }
-    NSURL *tmpModelURL = [[NSBundle mainBundle] URLForResource:self.coreDataModelName
+    NSURL *tmpModelURL = [[NSBundle mainBundle] URLForResource:self.coreDataModelName?:@"Model"
                                                  withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:tmpModelURL];
     return _managedObjectModel;
@@ -168,7 +168,6 @@
 }
 
 - (void) revert {
-    NSError* error = nil;
     @try {
         [self.managedObjectContext rollback];
     }

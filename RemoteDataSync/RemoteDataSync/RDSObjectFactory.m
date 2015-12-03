@@ -8,27 +8,17 @@
 
 #import "RDSObjectFactory.h"
 #import "RDSTypeConverter.h"
+#import <CoreData/CoreData.h>
 
 @implementation RDSObjectFactory
 
-+ (RDSObjectFactory*) sharedFactory
-{
-    static RDSObjectFactory* _sharedFactory = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _sharedFactory = [RDSObjectFactory new];
-    });
-
-    return _sharedFactory;
-}
-
-- (void) fillObject:(id)object fromData:(id)data withMapping:(RDSMapping*) mapping
+- (void) fillObject:(id)object fromData:(id<NSObject>)data
 {
     if (![data isKindOfClass:[NSDictionary class]]) {
         return;
     }
-    for (NSString* key in data) {
+    RDSMapping* mapping = [self.mappingProvider mappingForType:[object class]];
+    for (NSString* key in (NSDictionary*)data) {
         id value = data[key];
         RDSMappingItem* mappingItem = mapping.mappingItems[key];
         if (mappingItem.ignore) {
@@ -40,19 +30,35 @@
             continue;
         }
         if ([object respondsToSelector:NSSelectorFromString(finalKey)]) {
-            
-            if ([value isKindOfClass:[NSOrderedSet class]] ||
-                [value isKindOfClass:[NSSet class]] ||
-                [value isKindOfClass:[NSArray class]] ||
-                !value ||
-                value == [NSNull null]) {
-                continue;
-            }
-            
+
+//            if ([value isKindOfClass:[NSOrderedSet class]] ||
+//                [value isKindOfClass:[NSSet class]] ||
+//                [value isKindOfClass:[NSArray class]] ||
+//                !value ||
+//                value == [NSNull null]) {
+//                continue;
+//            }
+
             if ([object isKindOfClass:[NSManagedObject class]]) {
-                value = [RDSTypeConverter convert:value toEntity:((NSManagedObject*)object).entity key:finalKey];
+ 
+                NSPropertyDescription* property = ((NSManagedObject*)object).entity.propertiesByName[finalKey];
+                if ([property isKindOfClass:[NSRelationshipDescription class]]) {
+                    if (![value isKindOfClass:[NSDictionary class]]) {
+                        continue;
+                    }
+                    id originalObject = [object valueForKey:finalKey];
+                    if (!originalObject) {
+                        NSString* type = [(NSRelationshipDescription*)property destinationEntity].name;
+                        originalObject = [self.dataStore createObjectOfType:type];
+                        [object setValue:originalObject forKey:finalKey];
+                    }
+                    [self fillObject:originalObject fromData:value];
+                } else {
+                    value = [RDSTypeConverter convert:value toEntity:((NSManagedObject*)object).entity key:finalKey];
+                }
+            } else {
+                [object setValue:value forKey:finalKey];
             }
-            [object setValue:value forKey:finalKey];
         }
     }
 }

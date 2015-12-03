@@ -8,12 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		E0559C5C1C0E2A930038C5AD /* RemoteDataSync.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C5B1C0E2A930038C5AD /* RemoteDataSync.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0559C6E1C0E2B510038C5AD /* RDSCoreDataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C631C0E2B510038C5AD /* RDSCoreDataStore.h */; };
+		E0559C6F1C0E2B510038C5AD /* RDSCoreDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E0559C641C0E2B510038C5AD /* RDSCoreDataStore.m */; };
+		E0559C701C0E2B510038C5AD /* RDSDataStore.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C651C0E2B510038C5AD /* RDSDataStore.h */; };
+		E0559C711C0E2B510038C5AD /* RDSMapping.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C661C0E2B510038C5AD /* RDSMapping.h */; };
+		E0559C721C0E2B510038C5AD /* RDSMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = E0559C671C0E2B510038C5AD /* RDSMapping.m */; };
+		E0559C731C0E2B510038C5AD /* RDSMappingItem.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C681C0E2B510038C5AD /* RDSMappingItem.h */; };
+		E0559C741C0E2B510038C5AD /* RDSMappingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E0559C691C0E2B510038C5AD /* RDSMappingItem.m */; };
+		E0559C751C0E2B510038C5AD /* RDSObjectFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C6A1C0E2B510038C5AD /* RDSObjectFactory.h */; };
+		E0559C761C0E2B510038C5AD /* RDSObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E0559C6B1C0E2B510038C5AD /* RDSObjectFactory.m */; };
+		E0559C771C0E2B510038C5AD /* RDSTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = E0559C6C1C0E2B510038C5AD /* RDSTypeConverter.h */; };
+		E0559C781C0E2B510038C5AD /* RDSTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0559C6D1C0E2B510038C5AD /* RDSTypeConverter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E0559C581C0E2A930038C5AD /* RemoteDataSync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RemoteDataSync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0559C5B1C0E2A930038C5AD /* RemoteDataSync.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RemoteDataSync.h; sourceTree = "<group>"; };
 		E0559C5D1C0E2A930038C5AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0559C631C0E2B510038C5AD /* RDSCoreDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSCoreDataStore.h; sourceTree = "<group>"; };
+		E0559C641C0E2B510038C5AD /* RDSCoreDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSCoreDataStore.m; sourceTree = "<group>"; };
+		E0559C651C0E2B510038C5AD /* RDSDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSDataStore.h; sourceTree = "<group>"; };
+		E0559C661C0E2B510038C5AD /* RDSMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSMapping.h; sourceTree = "<group>"; };
+		E0559C671C0E2B510038C5AD /* RDSMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSMapping.m; sourceTree = "<group>"; };
+		E0559C681C0E2B510038C5AD /* RDSMappingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSMappingItem.h; sourceTree = "<group>"; };
+		E0559C691C0E2B510038C5AD /* RDSMappingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSMappingItem.m; sourceTree = "<group>"; };
+		E0559C6A1C0E2B510038C5AD /* RDSObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSObjectFactory.h; sourceTree = "<group>"; };
+		E0559C6B1C0E2B510038C5AD /* RDSObjectFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSObjectFactory.m; sourceTree = "<group>"; };
+		E0559C6C1C0E2B510038C5AD /* RDSTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSTypeConverter.h; sourceTree = "<group>"; };
+		E0559C6D1C0E2B510038C5AD /* RDSTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSTypeConverter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +68,17 @@
 		E0559C5A1C0E2A930038C5AD /* RemoteDataSync */ = {
 			isa = PBXGroup;
 			children = (
+				E0559C631C0E2B510038C5AD /* RDSCoreDataStore.h */,
+				E0559C641C0E2B510038C5AD /* RDSCoreDataStore.m */,
+				E0559C651C0E2B510038C5AD /* RDSDataStore.h */,
+				E0559C661C0E2B510038C5AD /* RDSMapping.h */,
+				E0559C671C0E2B510038C5AD /* RDSMapping.m */,
+				E0559C681C0E2B510038C5AD /* RDSMappingItem.h */,
+				E0559C691C0E2B510038C5AD /* RDSMappingItem.m */,
+				E0559C6A1C0E2B510038C5AD /* RDSObjectFactory.h */,
+				E0559C6B1C0E2B510038C5AD /* RDSObjectFactory.m */,
+				E0559C6C1C0E2B510038C5AD /* RDSTypeConverter.h */,
+				E0559C6D1C0E2B510038C5AD /* RDSTypeConverter.m */,
 				E0559C5B1C0E2A930038C5AD /* RemoteDataSync.h */,
 				E0559C5D1C0E2A930038C5AD /* Info.plist */,
 			);
@@ -60,6 +93,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0559C5C1C0E2A930038C5AD /* RemoteDataSync.h in Headers */,
+				E0559C6E1C0E2B510038C5AD /* RDSCoreDataStore.h in Headers */,
+				E0559C751C0E2B510038C5AD /* RDSObjectFactory.h in Headers */,
+				E0559C701C0E2B510038C5AD /* RDSDataStore.h in Headers */,
+				E0559C771C0E2B510038C5AD /* RDSTypeConverter.h in Headers */,
+				E0559C711C0E2B510038C5AD /* RDSMapping.h in Headers */,
+				E0559C731C0E2B510038C5AD /* RDSMappingItem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +169,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0559C721C0E2B510038C5AD /* RDSMapping.m in Sources */,
+				E0559C761C0E2B510038C5AD /* RDSObjectFactory.m in Sources */,
+				E0559C741C0E2B510038C5AD /* RDSMappingItem.m in Sources */,
+				E0559C781C0E2B510038C5AD /* RDSTypeConverter.m in Sources */,
+				E0559C6F1C0E2B510038C5AD /* RDSCoreDataStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

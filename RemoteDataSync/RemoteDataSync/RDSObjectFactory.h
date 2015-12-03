@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RDSMapping.h"
+#import "RDSMappingProvider.h"
+#import "RDSDataStore.h"
 
 @interface RDSObjectFactory : NSObject
 
-+ (RDSObjectFactory*) sharedFactory;
-- (void) fillObject:(id)object fromData:(id)data withMapping:(RDSMapping*) mapping;
+@property (nonatomic, strong) id<RDSMappingProvider> mappingProvider;
+@property (nonatomic, strong) id<RDSDataStore> dataStore;
+
+- (void) fillObject:(id)object fromData:(id<NSObject>)data;
 
 @end
