@@ -22,5 +22,6 @@ extern NSString * const RDSRequestSchemeRemove;
 @property (nonatomic, copy)   NSDictionary* (^parametersBlock)(id object);
 @property (nonatomic, copy)   NSString* (^pathBlock)(id object);
 @property (nonatomic, copy)   NSString* path;
+@property (nonatomic, copy)   NSString* baseKeyPath;
 
 @end

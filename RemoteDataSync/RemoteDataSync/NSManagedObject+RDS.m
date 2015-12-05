@@ -41,8 +41,13 @@ withParameters:(nullable NSDictionary*)parameters
                                                                                                                               scheme:RDSRequestSchemeFetch]
                                                additionalParameters:parameters
                                                             success:^(NSURLSessionDataTask *task, id response) {
-                                                                [[RDSManager defaultManager].objectFactory fillObject:self
-                                                                                                    fromData:response];
+                                                                if (keyName) {
+                                                                    [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response];
+                                                                } else {
+                                                                    [[RDSManager defaultManager].objectFactory fillObject:self
+                                                                                                        fromData:response];
+                                                                }
+                                                                [[RDSManager defaultManager].dataStore save];
                                                                 if(success) {
                                                                     success(response);
                                                                 }

@@ -15,16 +15,30 @@
 @implementation RDSAFNetworkConnector
 @synthesize responsePreprocess;
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.responseSerializer = [AFJSONResponseSerializer serializer];
+        self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    }
+    return self;
+}
+
 - (NSURLSessionDataTask *)dataTaskForObject:(id) object
                           withConfiguration:(RDSRequestConfiguration*) configuration
                        additionalParameters:(id)parameters
-                                    success:(void (^)(NSURLSessionDataTask *, id))success
+                                    success:(void (^)(NSURLSessionDataTask *, id)) success
                                     failure:(void (^)(NSURLSessionDataTask *, NSError *))failure;
 {
    NSURLSessionDataTask * task = [self dataTaskWithHTTPMethod:configuration.method
                                                     URLString:configuration.pathBlock?configuration.pathBlock(object):configuration.path
                                                    parameters:parameters
-                                                      success:success failure:failure];
+                                                      success:^(NSURLSessionDataTask *task, id response) {
+                                                          if (success) {
+                                                              success(task, configuration.baseKeyPath.length?[response valueForKeyPath:configuration.baseKeyPath]:response);
+                                                          }
+                                                      } failure: failure];
     return task;
 }
 

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "RDSRequestConfigurator.h"
 
-
 @interface RDSDictionaryRequestConfigurator : NSObject <RDSRequestConfigurator>
 
 @end

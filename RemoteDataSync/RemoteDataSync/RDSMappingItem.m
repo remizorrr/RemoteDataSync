@@ -18,4 +18,9 @@
     }
     return self;
 }
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@->%@, ignore(%d), ignoreType(%d)>", self.fromKeyPath, self.toKeyPath,self.ignore, self.ignoreType];
+}
+
 @end

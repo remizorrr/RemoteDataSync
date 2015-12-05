@@ -43,25 +43,81 @@
  
                 NSPropertyDescription* property = ((NSManagedObject*)object).entity.propertiesByName[finalKey];
                 if ([property isKindOfClass:[NSRelationshipDescription class]]) {
-                    if (![value isKindOfClass:[NSDictionary class]]) {
-                        continue;
+                    if ([value isKindOfClass:[NSDictionary class]] && !((NSRelationshipDescription*)property).toMany) {
+                        id originalObject = [object valueForKey:finalKey];
+                        if (!originalObject) {
+                            NSString* type = [(NSRelationshipDescription*)property destinationEntity].name;
+                            originalObject = [self.dataStore createObjectOfType:type];
+                            [object setValue:originalObject forKey:finalKey];
+                        }
+                        [self fillObject:originalObject fromData:value];
+                    } else if ([value isKindOfClass:[NSArray class]] && ((NSRelationshipDescription*)property).toMany) {
+                        [self fillRelationshipOnManagedObject:object withKey:finalKey fromData:value];
                     }
-                    id originalObject = [object valueForKey:finalKey];
-                    if (!originalObject) {
-                        NSString* type = [(NSRelationshipDescription*)property destinationEntity].name;
-                        originalObject = [self.dataStore createObjectOfType:type];
-                        [object setValue:originalObject forKey:finalKey];
-                    }
-                    [self fillObject:originalObject fromData:value];
-                } else {
+                    continue;
+
+                }
+                else {
                     value = [RDSTypeConverter convert:value toEntity:((NSManagedObject*)object).entity key:finalKey];
                 }
-            } else {
-                [object setValue:value forKey:finalKey];
             }
+            [object setValue:value forKey:finalKey];
         }
     }
 }
+
+- (void) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data {
+    NSRelationshipDescription* property = object.entity.propertiesByName[key];
+    Class type = NSClassFromString(((NSRelationshipDescription*)property).destinationEntity.name);
+    [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data];
+}
+
+- (void) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data {
+    if (![data isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    if (![object isKindOfClass:[NSManagedObject class]]) {
+        NSLog(@"RDS Warning: Non core data object are not supported for fillRelationshipOnObject:.");
+        return;
+    }
+    
+    NSArray* currentItems = [(NSOrderedSet*)[object valueForKey:key] array];
+    for (NSManagedObject* object in currentItems) {
+#warning Fix the caching
+        // Temporary full rewrite.
+        [self.dataStore deleteObject:object];
+    }
+    
+    NSMutableArray* newItems = [NSMutableArray array];
+    [newItems addObjectsFromArray:newItems];
+//    NSMutableDictionary* cache = [NSMutableDictionary dictionary];
+//
+//    for (id object in newItems) {
+//        if (![[object valueForKey:uniqueKey] length]) {
+//            NSLog(@"Error!! Travel with no identifier");
+//        } else {
+//            [cache setObject:object forKey:[object valueForKey:uniqueKey]];
+//        }
+//    }
+
+    for (NSDictionary* itemJSON in data) {
+        id item = nil;//cache[itemJSON[@"id"]];
+        if (!item) {
+            item = [self.dataStore createObjectOfType:NSStringFromClass(type)];
+        }
+        
+        [self fillObject:item
+                fromData:itemJSON];
+        
+//        [cache setObject:travel forKey:travel.identifier];
+        [newItems addObject:item];
+    }
+    NSRelationshipDescription* property = ((NSManagedObject*)object).entity.propertiesByName[key];
+    Class collectionType = (property.ordered)?NSOrderedSet.class:NSSet.class;
+    [object setValue:[[collectionType alloc] initWithArray:newItems] forKey:key];
+}
+
+
 
 //- (void) fillObject:(id)object keyPath:(NSString*)keypath fromData:(id)data withMapping:(RDSMapping*) mapping uniqieKey:(NSString*)uniqueKey
 //{

@@ -31,4 +31,7 @@
     return mapping;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", self.mappingItems];
+}
 @end
