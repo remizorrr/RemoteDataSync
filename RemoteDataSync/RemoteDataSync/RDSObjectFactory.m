@@ -67,29 +67,37 @@
 }
 
 - (void) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data {
-    NSRelationshipDescription* property = object.entity.propertiesByName[key];
-    Class type = NSClassFromString(((NSRelationshipDescription*)property).destinationEntity.name);
-    [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data];
+    [self fillRelationshipOnManagedObject:object withKey:key fromData:data byReplacingData:YES];
 }
 
-- (void) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data {
+- (void) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace{
+    NSRelationshipDescription* property = object.entity.propertiesByName[key];
+    Class type = NSClassFromString(((NSRelationshipDescription*)property).destinationEntity.name);
+    [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data byReplacingData:replace];
+}
+
+- (void) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data byReplacingData:(BOOL)replace{
     if (![data isKindOfClass:[NSArray class]]) {
         return;
     }
+    
     if (![object isKindOfClass:[NSManagedObject class]]) {
         NSLog(@"RDS Warning: Non core data object are not supported for fillRelationshipOnObject:.");
         return;
     }
     
+    NSMutableArray* newItems = [NSMutableArray array];
     NSArray* currentItems = [(NSOrderedSet*)[object valueForKey:key] array];
-    for (NSManagedObject* object in currentItems) {
-#warning Fix the caching
-        // Temporary full rewrite.
-        [self.dataStore deleteObject:object];
+    if (replace) {
+        for (NSManagedObject* object in currentItems) {
+    #warning Fix the caching
+            // Temporary full rewrite.
+            [self.dataStore deleteObject:object];
+        }
+    } else  {
+        [newItems addObjectsFromArray:currentItems];
     }
     
-    NSMutableArray* newItems = [NSMutableArray array];
-    [newItems addObjectsFromArray:newItems];
 //    NSMutableDictionary* cache = [NSMutableDictionary dictionary];
 //
 //    for (id object in newItems) {

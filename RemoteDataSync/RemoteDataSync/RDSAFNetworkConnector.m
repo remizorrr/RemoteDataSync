@@ -14,6 +14,7 @@
 
 @implementation RDSAFNetworkConnector
 @synthesize responsePreprocess;
+@synthesize errorProcess;
 
 - (instancetype)init
 {
@@ -64,12 +65,15 @@
     __block NSURLSessionDataTask *dataTask = nil;
     dataTask = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
         if (error) {
+            if (self.errorProcess) {
+                self.errorProcess(responseObject, error);
+            }
             if (failure) {
                 failure(dataTask, error);
             }
         } else {
             if (self.responsePreprocess) {
-                if (!self.responsePreprocess(&responseObject)) {
+                if (!self.responsePreprocess(&responseObject, response)) {
                     return;
                 }
             }

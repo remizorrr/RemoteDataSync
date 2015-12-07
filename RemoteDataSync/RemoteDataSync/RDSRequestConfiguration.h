@@ -23,5 +23,6 @@ extern NSString * const RDSRequestSchemeRemove;
 @property (nonatomic, copy)   NSString* (^pathBlock)(id object);
 @property (nonatomic, copy)   NSString* path;
 @property (nonatomic, copy)   NSString* baseKeyPath;
+@property (nonatomic, assign) BOOL replace;
 
 @end

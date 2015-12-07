@@ -11,7 +11,8 @@
 @protocol RDSNetworkConnector <NSObject>
 
 @property (nonatomic, strong) NSURL* baseURL;
-@property (nonatomic, strong) BOOL(^responsePreprocess)(id* response);
+@property (nonatomic, strong) BOOL(^responsePreprocess)(id* data, NSURLResponse* response);
+@property (nonatomic, strong) void(^errorProcess)(id response, NSError* error);
 
 - (NSURLSessionDataTask *)dataTaskForObject:(id) object
                           withConfiguration:(RDSRequestConfiguration*) configuration

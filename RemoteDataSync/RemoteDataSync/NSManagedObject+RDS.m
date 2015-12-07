@@ -34,15 +34,16 @@
 withParameters:(nullable NSDictionary*)parameters
        success:(nullable void (^)(id __nonnull responseObject))success
        failure:(nullable void (^)(NSError* __nullable error))failure {
+    RDSRequestConfiguration* configuration = [[RDSManager defaultManager].configurator configurationForObject:self
+                                                             keyPath:keyName
+                                                              scheme:RDSRequestSchemeFetch];
     NSURLSessionDataTask* task =
     [[RDSManager defaultManager].networkConnector dataTaskForObject:self
-                                                  withConfiguration:[[RDSManager defaultManager].configurator configurationForObject:self
-                                                                                                                             keyPath:keyName
-                                                                                                                              scheme:RDSRequestSchemeFetch]
+                                                  withConfiguration:configuration
                                                additionalParameters:parameters
                                                             success:^(NSURLSessionDataTask *task, id response) {
                                                                 if (keyName) {
-                                                                    [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response];
+                                                                    [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:configuration.replace];
                                                                 } else {
                                                                     [[RDSManager defaultManager].objectFactory fillObject:self
                                                                                                         fromData:response];
