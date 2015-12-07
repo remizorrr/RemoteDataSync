@@ -15,4 +15,13 @@ NSString * const RDSRequestSchemeRemove = @"RDSRequestSchemeRemove";
 
 @implementation RDSRequestConfiguration
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.replace = YES;
+    }
+    return self;
+}
+
 @end
