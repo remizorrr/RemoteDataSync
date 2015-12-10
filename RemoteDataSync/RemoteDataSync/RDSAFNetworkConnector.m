@@ -32,14 +32,17 @@
                                     success:(void (^)(NSURLSessionDataTask *, id)) success
                                     failure:(void (^)(NSURLSessionDataTask *, NSError *))failure;
 {
-   NSURLSessionDataTask * task = [self dataTaskWithHTTPMethod:configuration.method
-                                                    URLString:configuration.pathBlock?configuration.pathBlock(object):configuration.path
-                                                   parameters:parameters
-                                                      success:^(NSURLSessionDataTask *task, id response) {
-                                                          if (success) {
-                                                              success(task, configuration.baseKeyPath.length?[response valueForKeyPath:configuration.baseKeyPath]:response);
-                                                          }
-                                                      } failure: failure];
+    if (!configuration) {
+        @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with nil configuration" userInfo:nil];
+    }
+    NSURLSessionDataTask * task = [self dataTaskWithHTTPMethod:configuration.method
+                                                     URLString:configuration.pathBlock?configuration.pathBlock(object):configuration.path
+                                                    parameters:parameters
+                                                       success:^(NSURLSessionDataTask *task, id response) {
+                                                           if (success) {
+                                                               success(task, configuration.baseKeyPath.length?[response valueForKeyPath:configuration.baseKeyPath]:response);
+                                                           }
+                                                       } failure: failure];
     return task;
 }
 
@@ -48,6 +51,10 @@
                                       parameters:(id)parameters
                                          success:(void (^)(NSURLSessionDataTask *, id))success
                                          failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+    if (!URLString.length) {
+        @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with empty url" userInfo:nil];
+    }
+
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
     if (serializationError) {

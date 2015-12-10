@@ -7,13 +7,34 @@
 //
 
 #import "RDSMapping.h"
+#import "RDSMapping+Protected.h"
 
+@interface RDSMapping()
+{
+    NSString* _jsonUniqueKey;
+}
+
+@end
 @implementation RDSMapping
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _jsonUniqueKey = nil;
+    }
+    return self;
+}
 
 + (RDSMapping*) mappingWithDictionary:(NSDictionary*)dictionary
 {
+    return [self mappingWithDictionary:dictionary primaryKey:nil];
+}
+
++ (RDSMapping*) mappingWithDictionary:(NSDictionary*)dictionary primaryKey:(NSString*)primaryKey
+{
     RDSMapping* mapping = [RDSMapping new];
-    
+    mapping.primaryKey = primaryKey;
     NSMutableDictionary * items = [NSMutableDictionary dictionary];
     for (NSString* fromKeyPath in dictionary) {
         RDSMappingItem* item = [RDSMappingItem new];
@@ -34,4 +55,19 @@
 - (NSString *)description {
     return [NSString stringWithFormat:@"%@", self.mappingItems];
 }
+
+- (NSString*) jsonUniqueKey {
+    if (!_jsonUniqueKey) {
+        _jsonUniqueKey = self.primaryKey;
+        for (NSString* key in self.mappingItems) {
+            RDSMappingItem* mapping = self.mappingItems[key];
+            if ([mapping.toKeyPath isEqualToString:self.primaryKey]) {
+                _jsonUniqueKey = key;
+                break;
+            }
+        }
+    }
+    return _jsonUniqueKey;
+}
+
 @end

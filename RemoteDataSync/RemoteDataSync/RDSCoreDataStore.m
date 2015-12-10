@@ -14,8 +14,8 @@
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
 }
-
 @end
+
 @implementation RDSCoreDataStore
 
 - (instancetype)init
@@ -124,25 +124,19 @@
 
 - (NSArray*) objectsOfType:(NSString*)type
 {
-    NSError* error = nil;
-    NSFetchRequest* fetchRequest =
-    [NSFetchRequest fetchRequestWithEntityName:type];
-    NSArray* objects =
-    [self.managedObjectContext executeFetchRequest:fetchRequest
-                                             error:&error];
-    if (error) {
-        NSLog(@"Error fetching objects of type %@ from CoreData store",type);
-        return @[];
-    }
-    return objects;
+    return [self objectsOfType:type forPredicate:nil];
 }
 
 - (NSArray*) objectsOfType:(NSString*)type forPredicate:(NSPredicate*) predicate
 {
     NSError* error = nil;
-    NSFetchRequest* fetchRequest =
-    [NSFetchRequest fetchRequestWithEntityName:type];
-    fetchRequest.predicate = predicate;
+    NSFetchRequest* fetchRequest = [NSFetchRequest new];
+    if (type) {
+        [fetchRequest setEntity:[NSEntityDescription entityForName:type inManagedObjectContext:self.managedObjectContext]];
+    }
+    if (predicate) {
+        fetchRequest.predicate = predicate;
+    }
     NSArray* objects =
     [self.managedObjectContext executeFetchRequest:fetchRequest
                                              error:&error];

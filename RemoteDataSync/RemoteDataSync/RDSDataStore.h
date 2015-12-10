@@ -13,6 +13,7 @@
 - (id) createUniqueObjectOfType:(NSString*)type;
 - (id) createObjectOfType:(NSString*)type;
 - (NSArray*) objectsOfType:(NSString*)type;
+- (NSArray*) objectsOfType:(NSString*)type withValue:(NSString*)value forKey:(NSString*)key;
 - (NSArray*) objectsOfType:(NSString*)type forPredicate:(NSPredicate*) predicate;
 - (void) save;
 - (void) revert;

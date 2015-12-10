@@ -9,8 +9,26 @@
 #import "RDSObjectFactory.h"
 #import "RDSTypeConverter.h"
 #import <CoreData/CoreData.h>
+#import "RDSObjectFactoryCache.h"
+#import "RDSMapping+Protected.h"
+
+@interface RDSObjectFactory()
+{
+    RDSObjectFactoryCache* _objectCache;
+}
+
+@end
 
 @implementation RDSObjectFactory
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _objectCache = [RDSObjectFactoryCache new];
+    }
+    return self;
+}
 
 - (void) fillObject:(id)object fromData:(id<NSObject>)data
 {
@@ -89,37 +107,42 @@
     NSMutableArray* newItems = [NSMutableArray array];
     NSArray* currentItems = [(NSOrderedSet*)[object valueForKey:key] array];
     if (replace) {
-        for (NSManagedObject* object in currentItems) {
-    #warning Fix the caching
-            // Temporary full rewrite.
-            [self.dataStore deleteObject:object];
+        for (NSManagedObject* item in currentItems) {
+            [self.dataStore deleteObject:item];
         }
     } else  {
         [newItems addObjectsFromArray:currentItems];
     }
     
-//    NSMutableDictionary* cache = [NSMutableDictionary dictionary];
-//
-//    for (id object in newItems) {
-//        if (![[object valueForKey:uniqueKey] length]) {
-//            NSLog(@"Error!! Travel with no identifier");
-//        } else {
-//            [cache setObject:object forKey:[object valueForKey:uniqueKey]];
-//        }
-//    }
+    [_objectCache clearCacheForType:type];
+    RDSMapping* mapping = [self.mappingProvider mappingForType:type];
+    if (mapping.primaryKey) {
+        for (id item in newItems) {
+            [_objectCache cacheObject:item forKey:mapping.primaryKey];
+        }
+    }
 
     for (NSDictionary* itemJSON in data) {
-        id item = nil;//cache[itemJSON[@"id"]];
+        NSString* uniqueKeyPath = [mapping jsonUniqueKey];
+        
+        id uniqueKeyValue = itemJSON[uniqueKeyPath];
+        id item = nil;
+        if (mapping.primaryKey) {
+            item = [_objectCache cachedObjectOfType:type withValue:uniqueKeyValue forKey:mapping.primaryKey];
+        }
         if (!item) {
             item = [self.dataStore createObjectOfType:NSStringFromClass(type)];
         }
         
         [self fillObject:item
                 fromData:itemJSON];
-        
-//        [cache setObject:travel forKey:travel.identifier];
+    
+        if (mapping.primaryKey) {
+            [_objectCache cacheObject:item forKey:mapping.primaryKey];
+        }
         [newItems addObject:item];
     }
+
     NSRelationshipDescription* property = ((NSManagedObject*)object).entity.propertiesByName[key];
     Class collectionType = (property.ordered)?NSOrderedSet.class:NSSet.class;
     [object setValue:[[collectionType alloc] initWithArray:newItems] forKey:key];

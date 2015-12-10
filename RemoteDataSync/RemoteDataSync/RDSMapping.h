@@ -13,7 +13,9 @@
 
 @property (nonatomic, strong) NSString* baseKeyPath;
 @property (nonatomic, strong) NSDictionary* mappingItems;
+@property (nonatomic, strong) NSString* primaryKey;
 
 + (RDSMapping*) mappingWithDictionary:(NSDictionary*)dictionary;
++ (RDSMapping*) mappingWithDictionary:(NSDictionary*)dictionary primaryKey:(NSString*)primaryKey;
 
 @end
