@@ -34,6 +34,9 @@
 withParameters:(nullable NSDictionary*)parameters
        success:(nullable void (^)(id __nonnull responseObject))success
        failure:(nullable void (^)(NSError* __nullable error))failure {
+    if(![NSThread isMainThread]) {
+        @throw [NSException exceptionWithName:@"RDS Error" reason:@"method can be used from main thread only" userInfo:nil];
+    }
     RDSRequestConfiguration* configuration = [[RDSManager defaultManager].configurator configurationForObject:self
                                                              keyPath:keyName
                                                               scheme:RDSRequestSchemeFetch];

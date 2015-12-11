@@ -18,6 +18,7 @@ extern NSString * const RDSRequestSchemeRemove;
 
 @property (nonatomic, strong) NSString* method;
 @property (nonatomic, strong) RDSMapping* mapping;
+@property (nonatomic, strong) RDSMapping* posting;
 @property (nonatomic, strong) NSDictionary* parameters;
 @property (nonatomic, copy)   NSDictionary* (^parametersBlock)(id object);
 @property (nonatomic, copy)   NSString* (^pathBlock)(id object);
