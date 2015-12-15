@@ -88,36 +88,36 @@
     [self fillRelationshipOnManagedObject:object withKey:key fromData:data byReplacingData:YES];
 }
 
-- (void) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace{
+- (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace{
     NSRelationshipDescription* property = object.entity.propertiesByName[key];
     Class type = NSClassFromString(((NSRelationshipDescription*)property).destinationEntity.name);
-    [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data byReplacingData:replace];
+    return [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data byReplacingData:replace];
 }
 
-- (void) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data byReplacingData:(BOOL)replace{
+- (NSInteger) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data byReplacingData:(BOOL)replace{
     if (![data isKindOfClass:[NSArray class]]) {
-        return;
+        return 0;
     }
     
     if (![object isKindOfClass:[NSManagedObject class]]) {
         NSLog(@"RDS Warning: Non core data object are not supported for fillRelationshipOnObject:.");
-        return;
+        return 0;
     }
     
+    NSInteger counter = 0;
+    
     NSMutableArray* newItems = [NSMutableArray array];
-    NSArray* currentItems = [(NSOrderedSet*)[object valueForKey:key] array];
-    if (replace) {
-        for (NSManagedObject* item in currentItems) {
-            [self.dataStore deleteObject:item];
-        }
-    } else  {
-        [newItems addObjectsFromArray:currentItems];
+    NSOrderedSet* currentItems = (NSOrderedSet*)[object valueForKey:key];
+    NSMutableOrderedSet* itemsToDelete = currentItems.mutableCopy;
+    
+    if (!replace) {
+        [newItems addObjectsFromArray:currentItems.array];
     }
     
     [_objectCache clearCacheForType:type];
     RDSMapping* mapping = [self.mappingProvider mappingForType:type];
     if (mapping.primaryKey) {
-        for (id item in newItems) {
+        for (id item in currentItems) {
             [_objectCache cacheObject:item forKey:mapping.primaryKey];
         }
     }
@@ -129,9 +129,13 @@
         id item = nil;
         if (mapping.primaryKey) {
             item = [_objectCache cachedObjectOfType:type withValue:uniqueKeyValue forKey:mapping.primaryKey];
+            if (item) {
+                [itemsToDelete removeObject:item];
+            }
         }
         if (!item) {
             item = [self.dataStore createObjectOfType:NSStringFromClass(type)];
+            ++counter;
         }
         
         [self fillObject:item
@@ -143,9 +147,16 @@
         [newItems addObject:item];
     }
 
+    if (replace) {
+        for (NSManagedObject* item in itemsToDelete) {
+            [self.dataStore deleteObject:item];
+        }
+    }
+
     NSRelationshipDescription* property = ((NSManagedObject*)object).entity.propertiesByName[key];
     Class collectionType = (property.ordered)?NSOrderedSet.class:NSSet.class;
     [object setValue:[[collectionType alloc] initWithArray:newItems] forKey:key];
+    return counter;
 }
 
 

@@ -17,12 +17,12 @@
                   failure:(nullable void (^)(NSError* __nullable error))failure;
 
 - (void) fetch:(nullable NSString*)keyName
-   withSuccess:(nullable void (^)(id __nonnull responseObject))success
+   withSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
        failure:(nullable void (^)(NSError* __nullable error))failure;
 
 - (void) fetch:(nullable NSString*)keyName
 withParameters:(nullable NSDictionary*)parameters
-       success:(nullable void (^)(id __nonnull responseObject))success
+       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
        failure:(nullable void (^)(NSError* __nullable error))failure;
 
 @end
