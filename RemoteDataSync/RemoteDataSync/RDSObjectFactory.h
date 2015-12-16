@@ -16,8 +16,9 @@
 @property (nonatomic, strong) id<RDSMappingProvider> mappingProvider;
 @property (nonatomic, strong) id<RDSDataStore> dataStore;
 
+- (void) prefillCache;
 - (void) fillObject:(id)object fromData:(id<NSObject>)data;
-- (void) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data;
+- (NSInteger) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data byReplacingData:(BOOL)replace;
 - (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data;
 - (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace;
 

@@ -32,4 +32,8 @@
     return mappings[NSStringFromClass(type)];
 }
 
+- (NSDictionary*) mappingsByType {
+    return mappings;
+}
+
 @end

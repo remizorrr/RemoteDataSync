@@ -7,12 +7,14 @@
 //
 
 #import "RDSCoreDataStore.h"
+#import "RDSObjectFactoryCache.h"
 
 @interface RDSCoreDataStore ()
 {
     NSManagedObjectContext * _managedObjectContext;
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
+    RDSObjectFactoryCache* _objectCache;
 }
 @end
 
@@ -23,6 +25,7 @@
     self = [super init];
     if (self) {
         self.cleanupOnMergeError = YES;
+        _objectCache = [RDSObjectFactoryCache new];
     }
     return self;
 }
@@ -146,6 +149,11 @@
     }
     return objects;
 }
+
+- (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key {
+    return [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
+}
+
 
 - (void) save
 {

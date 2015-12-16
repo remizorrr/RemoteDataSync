@@ -25,9 +25,9 @@
     return self;
 }
 
-- (id) cachedObjectOfType:(Class)type withValue:(id<NSCopying>)value forKey:(NSString*)key
+- (id) cachedObjectOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key
 {
-    NSDictionary* cachedObjectsByType = cache[NSStringFromClass(type)];
+    NSDictionary* cachedObjectsByType = cache[type];
     NSDictionary* cachedObjectsByKey = cachedObjectsByType[key];
     return cachedObjectsByKey[value];
 }
@@ -64,8 +64,31 @@
     [cache removeAllObjects];
 }
 
-- (void) clearCacheForType:(Class)type {
-    [cache removeObjectForKey:NSStringFromClass(type)];
+- (void) clearCacheForType:(NSString*)type {
+    [cache removeObjectForKey:type];
+}
+
+- (void) removeObjectOfType:(NSString*)type ForKey:(NSString*)key
+{
+    NSMutableDictionary* cachedObjectsByType = cache[type];
+    [cachedObjectsByType removeObjectForKey:key];
+}
+
+- (void) removeObject:(id)object cachedWithKey:(NSString*)key
+{
+    NSString* dictKey = [object valueForKey:key];
+    if (!dictKey) {
+        return;
+    }
+    NSMutableDictionary* cachedObjectsByType = cache[NSStringFromClass([object class])];
+    if (!cachedObjectsByType) {
+        return;
+    }
+    NSMutableDictionary* cachedObjectsByKey = cachedObjectsByType[key];
+    if (!cachedObjectsByKey) {
+        return;
+    }
+    [cachedObjectsByKey removeObjectForKey:dictKey];
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B41034A16D9EF4C64BF85045 /* libPods-RemoteDataSync.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03B34125AACD399D74DFD844 /* libPods-RemoteDataSync.a */; };
 		E0443BFC1C20C65B00DC4942 /* NSManagedObject+RDS.h in Headers */ = {isa = PBXBuildFile; fileRef = E0443BDC1C20C65B00DC4942 /* NSManagedObject+RDS.h */; };
 		E0443BFD1C20C65B00DC4942 /* NSManagedObject+RDS.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BDD1C20C65B00DC4942 /* NSManagedObject+RDS.m */; };
 		E0443BFE1C20C65B00DC4942 /* RDSAFNetworkConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = E0443BDE1C20C65B00DC4942 /* RDSAFNetworkConnector.h */; };
@@ -39,9 +40,39 @@
 		E0443C191C20C65B00DC4942 /* RDSTypeConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = E0443BF91C20C65B00DC4942 /* RDSTypeConverter.h */; };
 		E0443C1A1C20C65B00DC4942 /* RDSTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BFA1C20C65B00DC4942 /* RDSTypeConverter.m */; };
 		E0443C1B1C20C65B00DC4942 /* RemoteDataSync.h in Headers */ = {isa = PBXBuildFile; fileRef = E0443BFB1C20C65B00DC4942 /* RemoteDataSync.h */; };
+		E0443C241C20C87100DC4942 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C231C20C87100DC4942 /* main.m */; };
+		E0443C271C20C87100DC4942 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C261C20C87100DC4942 /* AppDelegate.m */; };
+		E0443C2A1C20C87100DC4942 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C291C20C87100DC4942 /* ViewController.m */; };
+		E0443C2D1C20C87100DC4942 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0443C2B1C20C87100DC4942 /* Main.storyboard */; };
+		E0443C2F1C20C87100DC4942 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0443C2E1C20C87100DC4942 /* Assets.xcassets */; };
+		E0443C321C20C87100DC4942 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0443C301C20C87100DC4942 /* LaunchScreen.storyboard */; };
+		E0443C401C20CDBF00DC4942 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E0443C3E1C20CDBF00DC4942 /* Model.xcdatamodeld */; };
+		E0443C411C20CE6500DC4942 /* NSManagedObject+RDS.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BDD1C20C65B00DC4942 /* NSManagedObject+RDS.m */; };
+		E0443C421C20CE6500DC4942 /* RDSAFNetworkConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BDF1C20C65B00DC4942 /* RDSAFNetworkConnector.m */; };
+		E0443C431C20CE6500DC4942 /* RDSCoreDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BE11C20C65B00DC4942 /* RDSCoreDataStore.m */; };
+		E0443C441C20CE6500DC4942 /* RDSDictionaryRequestConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BE41C20C65B00DC4942 /* RDSDictionaryRequestConfigurator.m */; };
+		E0443C451C20CE6500DC4942 /* RDSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BE61C20C65B00DC4942 /* RDSManager.m */; };
+		E0443C461C20CE6500DC4942 /* RDSMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BE81C20C65B00DC4942 /* RDSMapping.m */; };
+		E0443C471C20CE6500DC4942 /* RDSMappingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BEB1C20C65B00DC4942 /* RDSMappingItem.m */; };
+		E0443C481C20CE6500DC4942 /* RDSMappingStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BEE1C20C65B00DC4942 /* RDSMappingStore.m */; };
+		E0443C491C20CE6500DC4942 /* RDSObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BF11C20C65B00DC4942 /* RDSObjectFactory.m */; };
+		E0443C4A1C20CE6500DC4942 /* RDSObjectFactoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BF31C20C65B00DC4942 /* RDSObjectFactoryCache.m */; };
+		E0443C4B1C20CE6500DC4942 /* RDSPLISTRequestConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BF51C20C65B00DC4942 /* RDSPLISTRequestConfigurator.m */; };
+		E0443C4C1C20CE6500DC4942 /* RDSRequestConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BF71C20C65B00DC4942 /* RDSRequestConfiguration.m */; };
+		E0443C4D1C20CE6500DC4942 /* RDSTypeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443BFA1C20C65B00DC4942 /* RDSTypeConverter.m */; };
+		E0443C521C20D04B00DC4942 /* Login+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C4F1C20D04B00DC4942 /* Login+CoreDataProperties.m */; };
+		E0443C531C20D04B00DC4942 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C511C20D04B00DC4942 /* Login.m */; };
+		E0443C561C20D06000DC4942 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E0443C551C20D06000DC4942 /* NetworkManager.m */; };
+		E330193901D2F1A99D9582D0 /* libPods-Sample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00FCB88554C4D0B94CC09ADA /* libPods-Sample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00FCB88554C4D0B94CC09ADA /* libPods-Sample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03A46003097306C8D38887F2 /* Pods-RemoteDataSync.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RemoteDataSync.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RemoteDataSync/Pods-RemoteDataSync.debug.xcconfig"; sourceTree = "<group>"; };
+		03B34125AACD399D74DFD844 /* libPods-RemoteDataSync.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RemoteDataSync.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C97B6240BB104B7C85381BE /* Pods-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.debug.xcconfig"; sourceTree = "<group>"; };
+		9CA7F0DEBE86569E0161D253 /* Pods-RemoteDataSync.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RemoteDataSync.release.xcconfig"; path = "Pods/Target Support Files/Pods-RemoteDataSync/Pods-RemoteDataSync.release.xcconfig"; sourceTree = "<group>"; };
+		DEEFAEBD8F6C812F1970C168 /* Pods-Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.release.xcconfig"; sourceTree = "<group>"; };
 		E0443BDC1C20C65B00DC4942 /* NSManagedObject+RDS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+RDS.h"; sourceTree = "<group>"; };
 		E0443BDD1C20C65B00DC4942 /* NSManagedObject+RDS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+RDS.m"; sourceTree = "<group>"; };
 		E0443BDE1C20C65B00DC4942 /* RDSAFNetworkConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSAFNetworkConnector.h; sourceTree = "<group>"; };
@@ -74,26 +105,106 @@
 		E0443BF91C20C65B00DC4942 /* RDSTypeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDSTypeConverter.h; sourceTree = "<group>"; };
 		E0443BFA1C20C65B00DC4942 /* RDSTypeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDSTypeConverter.m; sourceTree = "<group>"; };
 		E0443BFB1C20C65B00DC4942 /* RemoteDataSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDataSync.h; sourceTree = "<group>"; };
+		E0443C201C20C87100DC4942 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0443C231C20C87100DC4942 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E0443C251C20C87100DC4942 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E0443C261C20C87100DC4942 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E0443C281C20C87100DC4942 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E0443C291C20C87100DC4942 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E0443C2C1C20C87100DC4942 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E0443C2E1C20C87100DC4942 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E0443C311C20C87100DC4942 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E0443C331C20C87100DC4942 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0443C3F1C20CDBF00DC4942 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		E0443C4E1C20D04B00DC4942 /* Login+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+CoreDataProperties.h"; sourceTree = "<group>"; };
+		E0443C4F1C20D04B00DC4942 /* Login+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+CoreDataProperties.m"; sourceTree = "<group>"; };
+		E0443C501C20D04B00DC4942 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
+		E0443C511C20D04B00DC4942 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
+		E0443C541C20D06000DC4942 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
+		E0443C551C20D06000DC4942 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		E0559C581C0E2A930038C5AD /* RemoteDataSync.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RemoteDataSync.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0559C5D1C0E2A930038C5AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E0443C1D1C20C87100DC4942 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E330193901D2F1A99D9582D0 /* libPods-Sample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E0559C541C0E2A930038C5AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B41034A16D9EF4C64BF85045 /* libPods-RemoteDataSync.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02A5929720AD6E161DBF7BF8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03B34125AACD399D74DFD844 /* libPods-RemoteDataSync.a */,
+				00FCB88554C4D0B94CC09ADA /* libPods-Sample.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9D0DCD53812B37A10FB640BC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				03A46003097306C8D38887F2 /* Pods-RemoteDataSync.debug.xcconfig */,
+				9CA7F0DEBE86569E0161D253 /* Pods-RemoteDataSync.release.xcconfig */,
+				2C97B6240BB104B7C85381BE /* Pods-Sample.debug.xcconfig */,
+				DEEFAEBD8F6C812F1970C168 /* Pods-Sample.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E0443C211C20C87100DC4942 /* Sample */ = {
+			isa = PBXGroup;
+			children = (
+				E0443C251C20C87100DC4942 /* AppDelegate.h */,
+				E0443C261C20C87100DC4942 /* AppDelegate.m */,
+				E0443C281C20C87100DC4942 /* ViewController.h */,
+				E0443C291C20C87100DC4942 /* ViewController.m */,
+				E0443C2B1C20C87100DC4942 /* Main.storyboard */,
+				E0443C2E1C20C87100DC4942 /* Assets.xcassets */,
+				E0443C301C20C87100DC4942 /* LaunchScreen.storyboard */,
+				E0443C331C20C87100DC4942 /* Info.plist */,
+				E0443C221C20C87100DC4942 /* Supporting Files */,
+				E0443C3E1C20CDBF00DC4942 /* Model.xcdatamodeld */,
+				E0443C4E1C20D04B00DC4942 /* Login+CoreDataProperties.h */,
+				E0443C4F1C20D04B00DC4942 /* Login+CoreDataProperties.m */,
+				E0443C501C20D04B00DC4942 /* Login.h */,
+				E0443C511C20D04B00DC4942 /* Login.m */,
+				E0443C541C20D06000DC4942 /* NetworkManager.h */,
+				E0443C551C20D06000DC4942 /* NetworkManager.m */,
+			);
+			path = Sample;
+			sourceTree = "<group>";
+		};
+		E0443C221C20C87100DC4942 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E0443C231C20C87100DC4942 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E0559C4E1C0E2A930038C5AD = {
 			isa = PBXGroup;
 			children = (
 				E0559C5A1C0E2A930038C5AD /* RemoteDataSync */,
+				E0443C211C20C87100DC4942 /* Sample */,
 				E0559C591C0E2A930038C5AD /* Products */,
+				9D0DCD53812B37A10FB640BC /* Pods */,
+				02A5929720AD6E161DBF7BF8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				E0559C581C0E2A930038C5AD /* RemoteDataSync.framework */,
+				E0443C201C20C87100DC4942 /* Sample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -177,14 +289,36 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		E0443C1F1C20C87100DC4942 /* Sample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0443C361C20C87100DC4942 /* Build configuration list for PBXNativeTarget "Sample" */;
+			buildPhases = (
+				C73993DC04A9E9A7E0B111A6 /* Check Pods Manifest.lock */,
+				E0443C1C1C20C87100DC4942 /* Sources */,
+				E0443C1D1C20C87100DC4942 /* Frameworks */,
+				E0443C1E1C20C87100DC4942 /* Resources */,
+				015E8C35686B827CAAA37215 /* Embed Pods Frameworks */,
+				ED4218312E88FE2DF227178B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sample;
+			productName = Sample;
+			productReference = E0443C201C20C87100DC4942 /* Sample.app */;
+			productType = "com.apple.product-type.application";
+		};
 		E0559C571C0E2A930038C5AD /* RemoteDataSync */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0559C601C0E2A930038C5AD /* Build configuration list for PBXNativeTarget "RemoteDataSync" */;
 			buildPhases = (
+				71B3FAF8307CD9D9E688563B /* Check Pods Manifest.lock */,
 				E0559C531C0E2A930038C5AD /* Sources */,
 				E0559C541C0E2A930038C5AD /* Frameworks */,
 				E0559C551C0E2A930038C5AD /* Headers */,
 				E0559C561C0E2A930038C5AD /* Resources */,
+				8869FAA2BC041E329919A7B5 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,6 +338,9 @@
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Anton Remizov";
 				TargetAttributes = {
+					E0443C1F1C20C87100DC4942 = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					E0559C571C0E2A930038C5AD = {
 						CreatedOnToolsVersion = 7.1;
 					};
@@ -215,6 +352,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = E0559C4E1C0E2A930038C5AD;
 			productRefGroup = E0559C591C0E2A930038C5AD /* Products */;
@@ -222,11 +360,22 @@
 			projectRoot = "";
 			targets = (
 				E0559C571C0E2A930038C5AD /* RemoteDataSync */,
+				E0443C1F1C20C87100DC4942 /* Sample */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E0443C1E1C20C87100DC4942 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0443C321C20C87100DC4942 /* LaunchScreen.storyboard in Resources */,
+				E0443C2F1C20C87100DC4942 /* Assets.xcassets in Resources */,
+				E0443C2D1C20C87100DC4942 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E0559C561C0E2A930038C5AD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -236,7 +385,112 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		015E8C35686B827CAAA37215 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sample/Pods-Sample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		71B3FAF8307CD9D9E688563B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8869FAA2BC041E329919A7B5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RemoteDataSync/Pods-RemoteDataSync-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C73993DC04A9E9A7E0B111A6 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ED4218312E88FE2DF227178B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sample/Pods-Sample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		E0443C1C1C20C87100DC4942 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0443C441C20CE6500DC4942 /* RDSDictionaryRequestConfigurator.m in Sources */,
+				E0443C2A1C20C87100DC4942 /* ViewController.m in Sources */,
+				E0443C421C20CE6500DC4942 /* RDSAFNetworkConnector.m in Sources */,
+				E0443C431C20CE6500DC4942 /* RDSCoreDataStore.m in Sources */,
+				E0443C461C20CE6500DC4942 /* RDSMapping.m in Sources */,
+				E0443C451C20CE6500DC4942 /* RDSManager.m in Sources */,
+				E0443C4B1C20CE6500DC4942 /* RDSPLISTRequestConfigurator.m in Sources */,
+				E0443C481C20CE6500DC4942 /* RDSMappingStore.m in Sources */,
+				E0443C561C20D06000DC4942 /* NetworkManager.m in Sources */,
+				E0443C491C20CE6500DC4942 /* RDSObjectFactory.m in Sources */,
+				E0443C471C20CE6500DC4942 /* RDSMappingItem.m in Sources */,
+				E0443C271C20C87100DC4942 /* AppDelegate.m in Sources */,
+				E0443C241C20C87100DC4942 /* main.m in Sources */,
+				E0443C411C20CE6500DC4942 /* NSManagedObject+RDS.m in Sources */,
+				E0443C521C20D04B00DC4942 /* Login+CoreDataProperties.m in Sources */,
+				E0443C4D1C20CE6500DC4942 /* RDSTypeConverter.m in Sources */,
+				E0443C4A1C20CE6500DC4942 /* RDSObjectFactoryCache.m in Sources */,
+				E0443C4C1C20CE6500DC4942 /* RDSRequestConfiguration.m in Sources */,
+				E0443C401C20CDBF00DC4942 /* Model.xcdatamodeld in Sources */,
+				E0443C531C20D04B00DC4942 /* Login.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E0559C531C0E2A930038C5AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -259,7 +513,50 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		E0443C2B1C20C87100DC4942 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E0443C2C1C20C87100DC4942 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E0443C301C20C87100DC4942 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E0443C311C20C87100DC4942 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		E0443C341C20C87100DC4942 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2C97B6240BB104B7C85381BE /* Pods-Sample.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Sample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.papaanton.Sample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E0443C351C20C87100DC4942 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEEFAEBD8F6C812F1970C168 /* Pods-Sample.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Sample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.papaanton.Sample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		E0559C5E1C0E2A930038C5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -350,6 +647,7 @@
 		};
 		E0559C611C0E2A930038C5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03A46003097306C8D38887F2 /* Pods-RemoteDataSync.debug.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -366,6 +664,7 @@
 		};
 		E0559C621C0E2A930038C5AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9CA7F0DEBE86569E0161D253 /* Pods-RemoteDataSync.release.xcconfig */;
 			buildSettings = {
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -383,6 +682,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E0443C361C20C87100DC4942 /* Build configuration list for PBXNativeTarget "Sample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E0443C341C20C87100DC4942 /* Debug */,
+				E0443C351C20C87100DC4942 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E0559C521C0E2A930038C5AD /* Build configuration list for PBXProject "RemoteDataSync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -402,6 +710,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E0443C3E1C20CDBF00DC4942 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E0443C3F1C20CDBF00DC4942 /* Model.xcdatamodel */,
+			);
+			currentVersion = E0443C3F1C20CDBF00DC4942 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E0559C4F1C0E2A930038C5AD /* Project object */;
 }

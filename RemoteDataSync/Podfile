@@ -4,6 +4,10 @@
 # use_frameworks!
 
 target 'RemoteDataSync' do
-pod "AFNetworking", "~> 2.0"
+    pod "AFNetworking", "~> 2.0"
+end
+
+target 'Sample' do
+    pod "AFNetworking", "~> 2.0"
 end
 

@@ -35,12 +35,19 @@
     if (!configuration) {
         @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with nil configuration" userInfo:nil];
     }
+    NSString* urlString = configuration.pathBlock?configuration.pathBlock(object):configuration.path;
     NSURLSessionDataTask * task = [self dataTaskWithHTTPMethod:configuration.method
-                                                     URLString:configuration.pathBlock?configuration.pathBlock(object):configuration.path
+                                                     URLString:urlString
                                                     parameters:parameters
                                                        success:^(NSURLSessionDataTask *task, id response) {
                                                            if (success) {
-                                                               success(task, configuration.baseKeyPath.length?[response valueForKeyPath:configuration.baseKeyPath]:response);
+                                                               if (configuration.baseKeyPath.length) {
+                                                                   response = [response valueForKeyPath:configuration.baseKeyPath];
+                                                                   if (!response) {
+                                                                       NSLog(@"RDSAFNetworkingConnector Warning: No data found for baseKeyPath(%@) for response to the url %@",configuration.baseKeyPath, urlString);
+                                                                   }
+                                                               }
+                                                               success(task, response);
                                                            }
                                                        } failure: failure];
     return task;

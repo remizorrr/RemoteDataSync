@@ -11,10 +11,12 @@
 #import <CoreData/CoreData.h>
 #import "RDSObjectFactoryCache.h"
 #import "RDSMapping+Protected.h"
+#import "NSArray+AsyncEnumeration.h"
 
 @interface RDSObjectFactory()
 {
     RDSObjectFactoryCache* _objectCache;
+    NSMutableSet* _cachedTypes;
 }
 
 @end
@@ -25,9 +27,42 @@
 {
     self = [super init];
     if (self) {
+        _cachedTypes = [NSMutableSet set];
         _objectCache = [RDSObjectFactoryCache new];
+        [self prefillCache];
     }
     return self;
+}
+
+- (void) prefillCache {
+    NSDictionary* allMappings = [self.mappingProvider mappingsByType];
+    for (NSString* type in allMappings) {
+        RDSMapping* mapping = allMappings[type];
+        if(mapping.primaryKey) {
+            [self prefillCacheForType:type mapping:mapping async:YES];
+        }
+    }
+}
+
+- (void) prefillCacheForType:(NSString*)type mapping:(RDSMapping*)mapping async:(BOOL)async {
+    if (!mapping || !mapping.primaryKey) {
+        return;
+    }
+    if ([_cachedTypes containsObject:type]) {
+        return;
+    }
+    [_cachedTypes addObject:type];
+    NSArray* allObjects = [self.dataStore objectsOfType:type];
+    if (async) {
+        [allObjects enumerateObjectsAsyncWithSyncChunkSize:100
+                                                usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                                    [_objectCache cacheObject:obj forKey:mapping.primaryKey];
+                                                }];
+    } else {
+        [allObjects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_objectCache cacheObject:obj forKey:mapping.primaryKey];
+        }];
+    }
 }
 
 - (void) fillObject:(id)object fromData:(id<NSObject>)data
@@ -36,6 +71,11 @@
         return;
     }
     RDSMapping* mapping = [self.mappingProvider mappingForType:[object class]];
+    if (mapping && mapping.primaryKey) {
+        [self prefillCacheForType:NSStringFromClass([object class])
+                          mapping:mapping async:NO];
+        [_objectCache removeObject:object cachedWithKey:mapping.primaryKey];
+    }
     for (NSString* key in (NSDictionary*)data) {
         id value = data[key];
         RDSMappingItem* mappingItem = mapping.mappingItems[key];
@@ -82,10 +122,13 @@
             [object setValue:value forKey:finalKey];
         }
     }
+    if (mapping && mapping.primaryKey) {
+        [_objectCache cacheObject:object forKey:mapping.primaryKey];
+    }
 }
 
-- (void) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data {
-    [self fillRelationshipOnManagedObject:object withKey:key fromData:data byReplacingData:YES];
+- (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data {
+    return [self fillRelationshipOnManagedObject:object withKey:key fromData:data byReplacingData:YES];
 }
 
 - (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace{
@@ -114,21 +157,15 @@
         [newItems addObjectsFromArray:currentItems.array];
     }
     
-    [_objectCache clearCacheForType:type];
     RDSMapping* mapping = [self.mappingProvider mappingForType:type];
-    if (mapping.primaryKey) {
-        for (id item in currentItems) {
-            [_objectCache cacheObject:item forKey:mapping.primaryKey];
-        }
-    }
-
+    
     for (NSDictionary* itemJSON in data) {
         NSString* uniqueKeyPath = [mapping jsonUniqueKey];
         
         id uniqueKeyValue = itemJSON[uniqueKeyPath];
         id item = nil;
         if (mapping.primaryKey) {
-            item = [_objectCache cachedObjectOfType:type withValue:uniqueKeyValue forKey:mapping.primaryKey];
+            item = [[self.dataStore objectsOfType:NSStringFromClass(type) withValue:uniqueKeyValue forKey:mapping.primaryKey] firstObject];
             if (item) {
                 [itemsToDelete removeObject:item];
             }
@@ -140,10 +177,7 @@
         
         [self fillObject:item
                 fromData:itemJSON];
-    
-        if (mapping.primaryKey) {
-            [_objectCache cacheObject:item forKey:mapping.primaryKey];
-        }
+
         [newItems addObject:item];
     }
 
@@ -159,37 +193,5 @@
     return counter;
 }
 
-
-
-//- (void) fillObject:(id)object keyPath:(NSString*)keypath fromData:(id)data withMapping:(RDSMapping*) mapping uniqieKey:(NSString*)uniqueKey
-//{
-//    NSArray* array = data;
-//    NSArray* currentItems = [(NSOrderedSet*)[object valueForKeyPath:keypath] array];
-//    NSMutableArray* newItems = [NSMutableArray array];
-//    [newItems addObjectsFromArray:newItems];
-//    NSMutableDictionary* cache = [NSMutableDictionary dictionary];
-//
-//    for (id object in newItems) {
-//        if (![[object valueForKey:uniqueKey] length]) {
-//            NSLog(@"Error!! Travel with no identifier");
-//        } else {
-//            [cache setObject:object forKey:[object valueForKey:uniqueKey]];
-//        }
-//    }
-//    
-//    for (NSDictionary* itemJSON in array) {
-//        id item = cache[itemJSON[@"id"]];
-//        if (!item) {
-//            item = [self.dataStore createObjectOfType:@"Travel"];
-//        }
-//        [[RDSObjectFactory sharedFactory] fillObject:travel
-//                                            fromData:travelJson
-//                                         withMapping:[RDSMapping mappingWithDictionary:@{@"id":@"identifier"}]];
-//        [cache setObject:travel forKey:travel.identifier];
-//        [newTravels addObject:travel];
-//    }
-//    [user setValue:[[NSOrderedSet alloc] initWithArray:newTravels]
-//        forKeyPath:keypath];
-//}
 
 @end

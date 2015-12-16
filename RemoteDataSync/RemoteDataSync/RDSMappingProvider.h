@@ -13,5 +13,6 @@
 
 - (void) addMapping:(RDSMapping*)mapping forType:(Class)type;
 - (RDSMapping*) mappingForType:(Class)type;
+- (NSDictionary*) mappingsByType;
 
 @end
