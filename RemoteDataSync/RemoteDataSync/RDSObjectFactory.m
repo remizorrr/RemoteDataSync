@@ -71,6 +71,10 @@
         return;
     }
     RDSMapping* mapping = [self.mappingProvider mappingForType:[object class]];
+    [self fillObject:object fromData:data withMapping:mapping];
+}
+
+- (void) fillObject:(id)object fromData:(id<NSObject>)data withMapping:(RDSMapping*)mapping {
     if (mapping && mapping.primaryKey) {
         [self prefillCacheForType:NSStringFromClass([object class])
                           mapping:mapping async:NO];
