@@ -25,4 +25,9 @@ withParameters:(nullable NSDictionary*)parameters
        success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
        failure:(nullable void (^)(NSError* __nullable error))failure;
 
+- (void) fetch:(nullable NSString*)keyName
+withParameters:(nullable NSDictionary*)parameters
+byReplacingData:(BOOL)replace
+       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
+       failure:(nullable void (^)(NSError* __nullable error))failure;
 @end
