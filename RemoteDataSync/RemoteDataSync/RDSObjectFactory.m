@@ -105,7 +105,14 @@
                         id originalObject = [object valueForKey:finalKey];
                         if (!originalObject) {
                             NSString* type = [(NSRelationshipDescription*)property destinationEntity].name;
-                            originalObject = [self.dataStore createObjectOfType:type];
+                            NSString* uniqueKeyPath = [mapping jsonUniqueKey];
+                            id uniqueKeyValue = value[uniqueKeyPath];
+                            if (uniqueKeyValue && mapping.primaryKey) {
+                                originalObject = [[self.dataStore objectsOfType:type withValue:uniqueKeyValue forKey:mapping.primaryKey] firstObject];
+                            }
+                            if (!originalObject) {
+                                originalObject = [self.dataStore createObjectOfType:type];
+                            }
                             [object setValue:originalObject forKey:finalKey];
                         }
                         [self fillObject:originalObject fromData:value];
