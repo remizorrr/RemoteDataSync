@@ -56,7 +56,7 @@ Factory caches objects, if the Mapping have primary key setup.
 	                                                 @"media_type":@"mediaType",
 	                                                 @"sort_index":@"sortIndex",
 	                                                 @"media_sources":@"mediaSources"
-	                                                 } primaryKey:@"serverID"] forType:PKMedia.class];
+	                                                 } primaryKey:@"serverID"] forType:Media.class];
 
 ```
 
@@ -65,12 +65,12 @@ Factory caches objects, if the Mapping have primary key setup.
 ```objc
     RDSRequestConfiguration* configuration = [RDSRequestConfiguration new];
     configuration.method = @"GET";
-    configuration.pathBlock = ^NSString* (PKUser* object) {
+    configuration.pathBlock = ^NSString* (User* object) {
         NSString* serverID = object.serverID;
         return [NSString stringWithFormat:@"/user/%@/media",serverID];
     };
     configuration.baseKeyPath = @"media_list";
-    [[RDSManager defaultManager].configurator addConfiguration:configuration forType:PKUser.class keyPath:@"medias" sheme:RDSRequestSchemeFetch];
+    [[RDSManager defaultManager].configurator addConfiguration:configuration forType:User.class keyPath:@"medias" sheme:RDSRequestSchemeFetch];
 ```
 
 ##### Fetch Object
