@@ -47,16 +47,9 @@ Factory caches objects, if the Mapping have primary key setup.
 ```objc
     [[RDSManager defaultManager].mappingProvider 
     addMapping:[RDSMapping mappingWithDictionary:@{ @"id":@"serverID",
-	                                                 @"asset_token":@"assetToken",
-	                                                 @"captured_ts":@"capturedAt",
-	                                                 @"created_ts":@"createdAt",
-	                                                 @"modified_ts":@"modifiedAt",
-	                                                 @"default_asset_type":@"defaultAssetType",
-	                                                 @"uploader_id":@"uploaderID",
-	                                                 @"media_type":@"mediaType",
-	                                                 @"sort_index":@"sortIndex",
-	                                                 @"media_sources":@"mediaSources"
-	                                                 } primaryKey:@"serverID"] forType:Media.class];
+	                                            @"asset_token":@"assetToken",
+	                                            @"media_sources":@"mediaSources"
+	                                          } primaryKey:@"serverID"] forType:Media.class];
 
 ```
 
