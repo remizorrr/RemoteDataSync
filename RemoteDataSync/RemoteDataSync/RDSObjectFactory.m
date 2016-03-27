@@ -12,6 +12,7 @@
 #import "RDSObjectFactoryCache.h"
 #import "RDSMapping+Protected.h"
 #import "NSArray+AsyncEnumeration.h"
+#import "NSManagedObject+RDS.h"
 
 @interface RDSObjectFactory()
 {
@@ -75,6 +76,7 @@
 }
 
 - (void) fillObject:(id)object fromData:(id<NSObject>)data withMapping:(RDSMapping*)mapping {
+    [object markState:RDSManagedObjectSynced];
     if (mapping && mapping.primaryKey) {
         [self prefillCacheForType:NSStringFromClass([object class])
                           mapping:mapping async:NO];
@@ -196,6 +198,5 @@
     [object setValue:[[collectionType alloc] initWithArray:newItems] forKey:key];
     return counter;
 }
-
 
 @end

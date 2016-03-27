@@ -27,14 +27,22 @@ static NSDateFormatter *_dateFormatter = nil;
         return [(NSDate*)value description];
 	if ([value isKindOfClass:[NSDate class]] && [type isEqualToString:@"NSString"])
         return [NSString stringWithFormat:@"%f",[(NSDate*)value timeIntervalSince1970]];
+    if (value == [NSNull null] && [type isEqualToString:@"NSString"]) {
+        return @"";
+    }
 	
     // End is NSNumber
-	if ([value isKindOfClass:[NSString class]] && ([value isEqualToString:@"true"] || [value isEqualToString:@"YES"]))
-        return @(1);
-    else if ([value isKindOfClass:[NSString class]] && ([value isEqualToString:@"false"] || [value isEqualToString:@"NO"]))
-        return @(0);
-	else if ([value isKindOfClass:[NSString class]] && [type isEqualToString:@"NSNumber"])
-        return @([(NSString*)value floatValue]);
+    if ([type isEqualToString:@"NSNumber"]) {
+        if ([value isKindOfClass:[NSString class]] && ([value isEqualToString:@"true"] || [value isEqualToString:@"YES"]))
+            return @(1);
+        else if ([value isKindOfClass:[NSString class]] && ([value isEqualToString:@"false"] || [value isEqualToString:@"NO"]))
+            return @(0);
+        else if ([value isKindOfClass:[NSString class]])
+            return @([(NSString*)value floatValue]);
+        else {
+            return @0;
+        }
+    }
     
     // End is NSData
     if ([value isKindOfClass:[NSString class]] && [type isEqualToString:@"NSData"])

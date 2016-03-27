@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "RDSDataStore.h"
+#import "NSManagedObject+RDS.h"
 
 @interface RDSCoreDataStore : NSObject <RDSDataStore>
 

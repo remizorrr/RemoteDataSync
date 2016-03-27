@@ -15,6 +15,7 @@
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
     RDSObjectFactoryCache* _objectCache;
+    NSMutableArray<NSManagedObject*>* _scheduledForDeletion;
 }
 @end
 
@@ -26,6 +27,7 @@
     if (self) {
         self.cleanupOnMergeError = YES;
         _objectCache = [RDSObjectFactoryCache new];
+        _scheduledForDeletion = [NSMutableArray array];
     }
     return self;
 }
@@ -113,6 +115,7 @@
 - (id) createObjectOfType:(NSString*)type
 {
     NSManagedObject* object = [NSEntityDescription insertNewObjectForEntityForName:type inManagedObjectContext:self.managedObjectContext];
+    object.state = RDSManagedObjectNew;
     return object;
 }
 
@@ -150,6 +153,10 @@
     return objects;
 }
 
+- (void) deleteObject:(id)object {
+    [self.managedObjectContext deleteObject:object];
+}
+
 - (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key {
     return [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
 }
@@ -159,10 +166,14 @@
 {
     NSError* error = nil;
     @try {
+        for (NSManagedObject* obj in _scheduledForDeletion) {
+            [self deleteObject:obj];
+        }
         if(![self.managedObjectContext save:&error])
         {
             NSLog(@"Error Saving Context: %@",error.description);
         }
+        [_scheduledForDeletion removeAllObjects];
     }
     @catch (NSException *exception) {
         [self wipeStorage];
@@ -172,6 +183,7 @@
 - (void) revert {
     @try {
         [self.managedObjectContext rollback];
+        [_scheduledForDeletion removeAllObjects];
     }
     @catch (NSException *exception) {
         [self wipeStorage];
@@ -183,6 +195,7 @@
 {
     // Destroy the persistent store
     [_managedObjectContext performBlockAndWait:^{
+        [_scheduledForDeletion removeAllObjects];
         __autoreleasing NSError* error = nil;
         [_managedObjectContext reset];
         if ([_persistentStoreCoordinator removePersistentStore:_persistentStoreCoordinator.persistentStores.lastObject
@@ -196,9 +209,14 @@
     }];
 }
 
-- (void) deleteObject:(id)object
+- (void) scheduleObjectDeletion:(id)object;
 {
-    [self.managedObjectContext deleteObject:object];
+    [_scheduledForDeletion  addObject:object];
+    [object markState:RDSManagedObjectRemoved];
+}
+
+- (NSArray*) objectsScheduledForDeletion {
+    return _scheduledForDeletion.copy;
 }
 
 @end

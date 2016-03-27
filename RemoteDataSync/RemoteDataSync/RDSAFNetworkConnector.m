@@ -15,31 +15,39 @@
 @implementation RDSAFNetworkConnector
 @synthesize responsePreprocess;
 @synthesize errorProcess;
+@synthesize parametersPreprocess;
+@synthesize requestPreprocess;
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.responseSerializer = [AFJSONResponseSerializer serializer];
-        self.requestSerializer = [AFHTTPRequestSerializer serializer];
+        self.requestSerializer = [AFJSONRequestSerializer serializer];
     }
     return self;
 }
 
-- (NSURLSessionDataTask *)dataTaskForObject:(id) object
+- (AFHTTPRequestOperation *)dataTaskForObject:(id) object
                           withConfiguration:(RDSRequestConfiguration*) configuration
-                       additionalParameters:(id)parameters
-                                    success:(void (^)(NSURLSessionDataTask *, id)) success
-                                    failure:(void (^)(NSURLSessionDataTask *, NSError *))failure;
+                       additionalParameters:(NSDictionary*)parameters
+                                    success:(void (^)(id)) success
+                                    failure:(void (^)(NSError *))failure
 {
     if (!configuration) {
         @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with nil configuration" userInfo:nil];
     }
     NSString* urlString = configuration.pathBlock?configuration.pathBlock(object):configuration.path;
-    NSURLSessionDataTask * task = [self dataTaskWithHTTPMethod:configuration.method
+    NSMutableDictionary* mParameters = parameters?parameters.mutableCopy:[NSMutableDictionary dictionary];
+    NSDictionary* addedParameters = configuration.parametersBlock?configuration.parametersBlock(object):configuration.parameters;
+    if (addedParameters) {
+        [mParameters addEntriesFromDictionary:addedParameters];
+    }
+    
+    AFHTTPRequestOperation * task = [self dataTaskWithHTTPMethod:configuration.method
                                                      URLString:urlString
-                                                    parameters:parameters
-                                                       success:^(NSURLSessionDataTask *task, id response) {
+                                                    parameters:mParameters.copy
+                                                       success:^(AFHTTPRequestOperation *task, id response) {
                                                            if (success) {
                                                                if (configuration.baseKeyPath.length) {
                                                                    response = [response valueForKeyPath:configuration.baseKeyPath];
@@ -47,23 +55,32 @@
                                                                        NSLog(@"RDSAFNetworkingConnector Warning: No data found for baseKeyPath(%@) for response to the url %@",configuration.baseKeyPath, urlString);
                                                                    }
                                                                }
-                                                               success(task, response);
+                                                               success(response);
                                                            }
-                                                       } failure: failure];
+                                                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                           failure(error);
+                                                       }];
     return task;
 }
 
-- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
+- (AFHTTPRequestOperation *)dataTaskWithHTTPMethod:(NSString *)method
                                        URLString:(NSString *)URLString
                                       parameters:(id)parameters
-                                         success:(void (^)(NSURLSessionDataTask *, id))success
-                                         failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+                                         success:(void (^)(AFHTTPRequestOperation *, id))success
+                                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
     if (!URLString.length) {
         @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with empty url" userInfo:nil];
     }
 
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
+    if (self.parametersPreprocess) {
+        parameters = self.parametersPreprocess(method, URLString, parameters);
+    }
+    NSURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&serializationError];
+    
+    if (self.requestPreprocess) {
+        request = self.requestPreprocess(request);
+    }
     if (serializationError) {
         if (failure) {
 #pragma clang diagnostic push
@@ -76,28 +93,36 @@
         
         return nil;
     }
-    __block NSURLSessionDataTask *dataTask = nil;
-    dataTask = [self dataTaskWithRequest:request completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
-        if (error) {
-            if (self.errorProcess) {
-                self.errorProcess(responseObject, error);
-            }
-            if (failure) {
-                failure(dataTask, error);
-            }
-        } else {
-            if (self.responsePreprocess) {
-                if (!self.responsePreprocess(&responseObject, response)) {
-                    return;
-                }
-            }
-            if (success) {
-                success(dataTask, responseObject);
+    
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@ - %@",operation, [[NSString alloc]initWithData:operation.responseData encoding:NSUTF8StringEncoding]);
+        if (self.responsePreprocess) {
+            if (!self.responsePreprocess(&responseObject, operation.response)) {
+                return;
             }
         }
+        if (success) {
+            success(operation, responseObject);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@ - %@",operation, [[NSString alloc]initWithData:operation.responseData encoding:NSUTF8StringEncoding]);
+
+        if (self.errorProcess) {
+            self.errorProcess(operation.responseData, error);
+        }
+        if (failure) {
+            failure(operation, error);
+        }
     }];
+    NSLog(@"%@ - %@ - %@",operation, method, [[NSString alloc]initWithData:[NSJSONSerialization dataWithJSONObject:parameters
+                                                                                            options:0
+                                                                                              error:nil]
+                                                   encoding:NSUTF8StringEncoding]);
+
+    [self.operationQueue addOperation:operation];
     
-    return dataTask;
+    return operation;
 }
+
 
 @end

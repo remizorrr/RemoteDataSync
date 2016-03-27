@@ -11,13 +11,15 @@
 @protocol RDSNetworkConnector <NSObject>
 
 @property (nonatomic, strong) NSURL* baseURL;
-@property (nonatomic, strong) BOOL(^responsePreprocess)(id* data, NSURLResponse* response);
-@property (nonatomic, strong) void(^errorProcess)(id response, NSError* error);
+@property (nonatomic, copy) id (^parametersPreprocess)(NSString* method, NSString * url, NSDictionary* parameters);
+@property (nonatomic, copy) NSURLRequest* (^requestPreprocess)(NSURLRequest* request);
+@property (nonatomic, copy) BOOL(^responsePreprocess)(id* data, NSURLResponse* response);
+@property (nonatomic, copy) void(^errorProcess)(id response, NSError* error);
 
-- (NSURLSessionDataTask *)dataTaskForObject:(id) object
+- (id)dataTaskForObject:(id) object
                           withConfiguration:(RDSRequestConfiguration*) configuration
-                       additionalParameters:(id)parameters
-                                    success:(void (^)(NSURLSessionDataTask *, id))success
-                                    failure:(void (^)(NSURLSessionDataTask *, NSError *))failure;
+                       additionalParameters:(NSDictionary*)parameters
+                                    success:(void (^)(id))success
+                                    failure:(void (^)(NSError *))failure;
 
 @end

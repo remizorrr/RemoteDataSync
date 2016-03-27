@@ -9,6 +9,6 @@
 #import <AFNetworking/AFNetworking.h>
 #import "RDSNetworkConnector.h"
 
-@interface RDSAFNetworkConnector : AFHTTPSessionManager <RDSNetworkConnector>
+@interface RDSAFNetworkConnector : AFHTTPRequestOperationManager <RDSNetworkConnector>
 
 @end
