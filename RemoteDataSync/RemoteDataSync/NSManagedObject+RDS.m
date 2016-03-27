@@ -23,9 +23,9 @@
 - (void) fetchWithParameters:(nullable NSDictionary*)parameters
                      success:(nullable void (^)(id __nonnull responseObject))success
                      failure:(nullable void (^)(NSError* __nullable error))failure {
-    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:nil withParameters:parameters
-        success:^(id  _Nonnull responseObject, NSInteger newObjects) { if(success) success(responseObject);}
-        failure:failure];
+    [self fetch:nil withParameters:parameters success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+        success(responseObject);
+    } failure:failure];
 }
 
 
@@ -33,16 +33,37 @@
    withSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
        failure:(nullable void (^)(NSError* __nullable error))failure
 {
-    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:keyName withParameters:nil success:success failure:failure];
+    [self fetch:keyName withParameters:nil success:success failure:failure];
 }
+
 - (void) fetch:(nullable NSString*)keyName
 withParameters:(nullable NSDictionary*)parameters
        success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
        failure:(nullable void (^)(NSError* __nullable error))failure {
+    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:keyName withParameters:parameters success:success failure:failure];
+}
+
+- (void) fetch:(nullable NSString*)keyName
+withParameters:(nullable NSDictionary*)parameters
+byReplacingData:(BOOL)replace
+       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
+       failure:(nullable void (^)(NSError* __nullable error))failure {
+    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:keyName withParameters:parameters byReplacingData:replace success:success failure:failure];
+}
+
+
+- (void) remoteCallWithScheme:(nonnull  NSString*)scheme
+                       forKey:(nullable NSString*)keyName
+               withParameters:(nullable NSDictionary*)parameters
+                      success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
+                      failure:(nullable void (^)(NSError* __nullable error))failure {
+    if(![NSThread isMainThread]) {
+        @throw [NSException exceptionWithName:@"RDS Error" reason:@"method can be used from main thread only" userInfo:nil];
+    }
     RDSRequestConfiguration* configuration = [[RDSManager defaultManager].configurator configurationForObject:self
                                                                                                       keyPath:keyName
-                                                                                                       scheme:RDSRequestSchemeFetch];
-    [self fetch:keyName withParameters:parameters byReplacingData:configuration.replace success:success failure:failure];
+                                                                                                       scheme:scheme];
+    [self remoteCallWithScheme:scheme forKey:keyName withParameters:parameters byReplacingData:configuration.replace success:success failure:failure];
 }
 
 - (void) remoteCallWithScheme:(nonnull  NSString*)scheme
@@ -56,7 +77,7 @@ withParameters:(nullable NSDictionary*)parameters
     }
     RDSRequestConfiguration* configuration = [[RDSManager defaultManager].configurator configurationForObject:self
                                                                                                       keyPath:keyName
-                                                                                                       scheme:RDSRequestSchemeFetch];
+                                                                                                       scheme:scheme];
     NSURLSessionDataTask* task =
     [[RDSManager defaultManager].networkConnector dataTaskForObject:self
                                                   withConfiguration:configuration
@@ -64,7 +85,7 @@ withParameters:(nullable NSDictionary*)parameters
                                                             success:^(id response) {
                                                                 NSInteger newObjects = 0;
                                                                 if (keyName) {
-                                                                    newObjects = [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:replace];
+                                                                    newObjects = [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:configuration.replace];
                                                                 } else {
                                                                     [[RDSManager defaultManager].objectFactory fillObject:self
                                                                                                                  fromData:response];
@@ -78,7 +99,7 @@ withParameters:(nullable NSDictionary*)parameters
                                                                 }
                                                             }];
     [task resume];
-   
+    
 }
 
 - (void) remoteSyncWithSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
