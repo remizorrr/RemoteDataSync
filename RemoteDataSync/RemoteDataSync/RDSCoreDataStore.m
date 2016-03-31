@@ -219,4 +219,13 @@
     return _scheduledForDeletion.copy;
 }
 
+- (BOOL) object:(id)object hasProperty:(NSString*)property {
+    if (![object isKindOfClass:[NSManagedObject class]]) {
+        @throw [NSException exceptionWithName:@"Not Supported Type" reason:@"RDSCoreDataStore supports only NSManagedObject type" userInfo:nil];
+    }
+    NSPropertyDescription* propertyDescription = ((NSManagedObject*)object).entity.propertiesByName[property];
+    return (BOOL)propertyDescription;
+}
+
+
 @end

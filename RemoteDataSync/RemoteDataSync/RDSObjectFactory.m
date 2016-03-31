@@ -93,16 +93,7 @@
 //            NSLog(@"Warning: Can't map \"description\" key");
             continue;
         }
-        if ([object respondsToSelector:NSSelectorFromString(finalKey)]) {
-
-//            if ([value isKindOfClass:[NSOrderedSet class]] ||
-//                [value isKindOfClass:[NSSet class]] ||
-//                [value isKindOfClass:[NSArray class]] ||
-//                !value ||
-//                value == [NSNull null]) {
-//                continue;
-//            }
-
+        if ([self.dataStore object:object hasProperty:finalKey]) {
             if ([object isKindOfClass:[NSManagedObject class]]) {
  
                 NSPropertyDescription* property = ((NSManagedObject*)object).entity.propertiesByName[finalKey];
