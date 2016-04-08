@@ -29,7 +29,15 @@
 }
 
 - (RDSMapping*) mappingForType:(Class)type {
-    return mappings[NSStringFromClass(type)];
+    Class class = type;
+    while (class != [NSObject class]) {
+        RDSMapping* mapping =  mappings[NSStringFromClass(class)];
+        if (mapping) {
+            return mapping;
+        }
+        class = [class superclass];
+    }
+    return nil;
 }
 
 - (NSDictionary*) mappingsByType {

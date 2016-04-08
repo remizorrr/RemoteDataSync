@@ -26,9 +26,18 @@
 }
 
 - (RDSRequestConfiguration*) configurationForObject:(id)object keyPath:(NSString*)keyPath scheme:(NSString*)scheme {
-    NSString* typeKey = keyPath.length?[NSString stringWithFormat:@"%@-%@",NSStringFromClass([object class]),keyPath]:NSStringFromClass([object class]);
-    NSDictionary* configurationsForObject = configurationsByType[typeKey];
-    return configurationsForObject[scheme];
+    Class class = [object class];
+    while (class != [NSObject class]) {
+        NSString* typeKey = keyPath.length?[NSString stringWithFormat:@"%@-%@",NSStringFromClass(class),keyPath]:NSStringFromClass(class);
+        NSDictionary* configurationsForObject = configurationsByType[typeKey];
+        RDSRequestConfiguration* configuration = configurationsForObject[scheme];
+        if (configuration) {
+            return configuration;
+        }
+        class = [class superclass];
+    }
+    
+    return nil;
 }
 
 - (void) addConfiguration:(RDSRequestConfiguration*)configuration forType:(Class)type keyPath:(NSString*)keyPath sheme:(NSString*)scheme {
