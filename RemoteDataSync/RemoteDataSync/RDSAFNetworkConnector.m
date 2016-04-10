@@ -60,6 +60,7 @@
                                                        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                                            failure(error);
                                                        }];
+    NSLog(@"RDSAFNetworkingConnector Log: task %@ with Data %@",task, mParameters);
     return task;
 }
 
