@@ -158,6 +158,10 @@
 }
 
 - (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key {
+    id object = [_objectCache cachedObjectOfType:type withValue:value forKey:key];
+    if (object) {
+        return object;
+    }
     return [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
 }
 
