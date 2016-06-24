@@ -22,3 +22,4 @@ FOUNDATION_EXPORT const unsigned char RemoteDataSyncVersionString[];
 #import "RDSObjectFactory.h"
 #import "RDSCoreDataStore.h"
 #import "RDSAFNetworkConnector.h"
+#import "RDSDummyDataHelpers.h"
