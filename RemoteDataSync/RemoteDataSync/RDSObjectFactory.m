@@ -88,14 +88,15 @@
         if (mappingItem.ignore) {
             continue;
         }
-        NSString* finalKey = mappingItem?mappingItem.toKeyPath:key;
+        NSString* finalKey = mappingItem.toKeyPath?:key;
         if ([finalKey isEqualToString:@"description"]) {
-//            NSLog(@"Warning: Can't map \"description\" key");
+            NSLog(@"Warning: Can't map \"description\" key");
             continue;
         }
         if ([self.dataStore object:object hasProperty:finalKey]) {
-            if ([object isKindOfClass:[NSManagedObject class]]) {
- 
+            if(mappingItem.toBlock) {
+                value = mappingItem.toBlock(data);
+            } else if ([object isKindOfClass:[NSManagedObject class]]) {
                 NSPropertyDescription* property = ((NSManagedObject*)object).entity.propertiesByName[finalKey];
                 if ([property isKindOfClass:[NSRelationshipDescription class]]) {
                     if ([value isKindOfClass:[NSDictionary class]] && !((NSRelationshipDescription*)property).toMany) {

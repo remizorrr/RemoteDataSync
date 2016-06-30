@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString* fromKeyPath;
 @property (nonatomic, strong) NSString* toKeyPath;
+@property (nonatomic, strong) id (^toBlock)(id object);
 @property (nonatomic, assign) BOOL ignoreType;
 @property (nonatomic, assign) BOOL ignore;
 
