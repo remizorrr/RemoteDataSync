@@ -42,8 +42,11 @@
         id value = dictionary[fromKeyPath];
         if ([value isKindOfClass:[NSNumber class]] && [value boolValue]==NO) {
             item.ignore = YES;
-        } else {
+        } else if ([value isKindOfClass:[NSString class]]) {
             item.toKeyPath = value;
+            item.ignoreType = YES;
+        } else {
+            item.toBlock = value;
             item.ignoreType = YES;
         }
         [items setObject:item forKey:fromKeyPath];
