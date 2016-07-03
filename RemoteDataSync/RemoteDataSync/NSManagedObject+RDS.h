@@ -21,23 +21,6 @@ typedef NS_ENUM(NSUInteger, RDSManagedObjectState) {
 
 - (void) markState:(RDSManagedObjectState)state;
 
-- (void) fetchWithSuccess:(nullable void (^)(id __nonnull responseObject))success
-                  failure:(nullable void (^)(NSError* __nullable error))failure;
-
-- (void) fetchWithParameters:(nullable NSDictionary*)parameters
-                     success:(nullable void (^)(id __nonnull responseObject))success
-                  failure:(nullable void (^)(NSError* __nullable error))failure;
-
-- (void) fetch:(nullable NSString*)keyName
-   withSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
-       failure:(nullable void (^)(NSError* __nullable error))failure;
-
-- (void) fetch:(nullable NSString*)keyName
-withParameters:(nullable NSDictionary*)parameters
-byReplacingData:(BOOL)replace
-       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
-       failure:(nullable void (^)(NSError* __nullable error))failure;
-
 - (void) remoteCallWithScheme:(nonnull  NSString*)scheme
                        forKey:(nullable NSString*)keyName
                withParameters:(nullable NSDictionary*)parameters

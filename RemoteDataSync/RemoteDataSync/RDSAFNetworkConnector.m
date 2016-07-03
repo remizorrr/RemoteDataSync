@@ -35,7 +35,8 @@
                                     failure:(void (^)(NSError *))failure
 {
     if (!configuration) {
-        @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:@"Can't fetch data with nil configuration" userInfo:nil];
+        NSString* errorString = [NSString stringWithFormat:@"Can't fetch data for object %@ with nil configuration",object];
+        @throw [NSException exceptionWithName:@"RDSAFNetworkConnector Error" reason:errorString userInfo:nil];
     }
     NSString* urlString = configuration.pathBlock?configuration.pathBlock(object):configuration.path;
     NSMutableDictionary* mParameters = parameters?parameters.mutableCopy:[NSMutableDictionary dictionary];

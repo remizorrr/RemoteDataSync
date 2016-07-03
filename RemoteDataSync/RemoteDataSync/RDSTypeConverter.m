@@ -59,11 +59,26 @@ static NSDateFormatter *_dateFormatter = nil;
 	if ([value isKindOfClass:[NSString class]] && [type isEqualToString:@"NSDate"])
 	{
         NSDate* date = [_dateFormatter dateFromString:value];
-        return date;
+        return date?:[self dateFromString:value];
 	}
 
     return nil;
+}
+
++ (NSDate*)dateFromString:(NSString*)string {
+    NSError *error = NULL;
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:(NSTextCheckingTypes)NSTextCheckingTypeDate error:&error];
     
+    NSArray *matches = [detector matchesInString:string
+                                         options:0
+                                           range:NSMakeRange(0, [string length])];
+    
+    for (NSTextCheckingResult *match in matches) {
+        if ([match resultType] == NSTextCheckingTypeDate) {
+            return [match date];
+        }
+    }
+    return nil;
 }
 
 + (id) convert:(id)value toEntity:(NSEntityDescription*)entity key:(NSString*)key

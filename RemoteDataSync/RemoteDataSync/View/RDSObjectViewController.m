@@ -3,14 +3,15 @@
 //  Tella
 //
 //  Created by Anton Remizov on 6/22/16.
-//  Copyright © 2016 PocketStoic. All rights reserved.
+//  Copyright © 2016 Appcoming. All rights reserved.
 //
 
 #import "RDSObjectViewController.h"
+#import "RemoteDataSync.h"
 
 @interface RDSObjectViewController ()
 {
-    
+    NSMutableArray<RDSObjectControllerConfiguration*>* _configurations;
 }
 @end
 
@@ -21,6 +22,7 @@
     self = [super init];
     if (self) {
         self.rdsManager = [RDSManager defaultManager];
+        _configurations = [NSMutableArray array];
     }
     return self;
 }
@@ -35,9 +37,13 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) configureWithObject:(_Nonnull id)object keyPath:( NSString* _Nullable )keypath {
-    _object = object;
-    _keyPath = keypath;
+- (void) addConfigurationWithObject:(NSManagedObject* _Nonnull )object keyPath:( NSString* _Nullable )keypath {
+    RDSObjectControllerConfiguration* configuration = [RDSObjectControllerConfiguration new];
+    configuration.object = object;
+    configuration.keyPath = keypath;
+    [_configurations addObject:configuration];
 }
 
 @end
+
+@implementation RDSObjectControllerConfiguration @end

@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Anton Remizov on 6/22/16.
-//  Copyright © 2016 PocketStoic. All rights reserved.
+//  Copyright © 2016 Appcoming. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

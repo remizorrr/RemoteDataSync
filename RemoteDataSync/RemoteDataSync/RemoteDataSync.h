@@ -18,8 +18,11 @@ FOUNDATION_EXPORT const unsigned char RemoteDataSyncVersionString[];
 
 #import "RDSManager.h"
 #import "NSManagedObject+RDS.h"
+#import "NSManagedObject+RDS+Fetch.h"
+#import "NSManagedObject+RDS+Update.h"
 #import "RDSMapping.h"
 #import "RDSObjectFactory.h"
 #import "RDSCoreDataStore.h"
 #import "RDSAFNetworkConnector.h"
 #import "RDSDummyDataHelpers.h"
+#import "RDSArrayViewController.h"

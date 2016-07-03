@@ -36,7 +36,6 @@
         }
         class = [class superclass];
     }
-    
     return nil;
 }
 

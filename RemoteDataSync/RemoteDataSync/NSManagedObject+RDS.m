@@ -13,45 +13,6 @@
 
 @implementation NSManagedObject (RDS)
 
-- (void) fetchWithSuccess:(nullable void (^)(id __nonnull responseObject))success
-                  failure:(nullable void (^)(NSError* __nullable error))failure {
-    [self fetch:nil
-    withSuccess:^(id  _Nonnull responseObject, NSInteger newObjects) { if(success) success(responseObject);}
-        failure:failure];
-}
-
-- (void) fetchWithParameters:(nullable NSDictionary*)parameters
-                     success:(nullable void (^)(id __nonnull responseObject))success
-                     failure:(nullable void (^)(NSError* __nullable error))failure {
-    [self fetch:nil withParameters:parameters success:^(id  _Nonnull responseObject, NSInteger newObjects) {
-        success(responseObject);
-    } failure:failure];
-}
-
-
-- (void) fetch:(nullable NSString*)keyName
-   withSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
-       failure:(nullable void (^)(NSError* __nullable error))failure
-{
-    [self fetch:keyName withParameters:nil success:success failure:failure];
-}
-
-- (void) fetch:(nullable NSString*)keyName
-withParameters:(nullable NSDictionary*)parameters
-       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
-       failure:(nullable void (^)(NSError* __nullable error))failure {
-    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:keyName withParameters:parameters success:success failure:failure];
-}
-
-- (void) fetch:(nullable NSString*)keyName
-withParameters:(nullable NSDictionary*)parameters
-byReplacingData:(BOOL)replace
-       success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
-       failure:(nullable void (^)(NSError* __nullable error))failure {
-    [self remoteCallWithScheme:RDSRequestSchemeFetch forKey:keyName withParameters:parameters byReplacingData:replace success:success failure:failure];
-}
-
-
 - (void) remoteCallWithScheme:(nonnull  NSString*)scheme
                        forKey:(nullable NSString*)keyName
                withParameters:(nullable NSDictionary*)parameters

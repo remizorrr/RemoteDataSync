@@ -3,20 +3,29 @@
 //  Tella
 //
 //  Created by Anton Remizov on 6/22/16.
-//  Copyright © 2016 PocketStoic. All rights reserved.
+//  Copyright © 2016 Appcoming. All rights reserved.
 //
 
 #import "RDSDummyDataHelpers.h"
 
-void RDSFillupWithDummyItems(NSManagedObject* object, NSString* key, NSInteger count) {
+void RDSFillupWithDummyItems (NSManagedObject* object, NSString* key, NSInteger count, NSArray* variations) {
     NSRelationshipDescription * description = [[object entity] relationshipsByName][key];
     NSEntityDescription * entity = nil;
     if (description) {
         entity = description.destinationEntity;
     }
-
+    NSMutableArray * objects = [NSMutableArray array];
     for (NSInteger i = 0; i < count; ++i) {
-        [[RDSManager defaultManager].dataStore objectsOfType:entity.managedObjectClassName];
+        id object = [[RDSManager defaultManager].dataStore createObjectOfType:entity.managedObjectClassName];
+        NSInteger index = roundf((float)rand()/(float)RAND_MAX*(variations.count - 1));
+        id data = variations[index];
+        [[RDSManager defaultManager].objectFactory fillObject:object fromData:data];
+        [objects addObject:object];
+    }
+    if (description.isOrdered) {
+        [object setValue:[NSOrderedSet orderedSetWithArray:objects] forKey:key];
+    } else {
+        [object setValue:[NSSet setWithArray:objects] forKey:key];
     }
 }
 

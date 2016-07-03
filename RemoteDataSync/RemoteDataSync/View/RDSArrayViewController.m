@@ -3,10 +3,11 @@
 //  Tella
 //
 //  Created by Anton Remizov on 6/22/16.
-//  Copyright © 2016 PocketStoic. All rights reserved.
+//  Copyright © 2016 Appcoming. All rights reserved.
 //
 
 #import "RDSArrayViewController.h"
+#import "RemoteDataSync.h"
 #import "RDSToastNotification.h"
 #import "UIColor+Hex.h"
 NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
@@ -23,14 +24,27 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 {
     self = [super init];
     if (self) {
-        _arrayController = [ACController new];
+        [self setupInitialData];
     }
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self setupInitialData];
+    }
+    return self;
+}
+
+- (void) setupInitialData {
+    _arrayController = [ACController new];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [self reloadViewModel];
-    [self fetchDataAndReload];
+    [self fetchDataAndReloadViewModel];
 }
 
 - (void)viewDidLoad {
@@ -44,9 +58,13 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 }
 
 - (NSArray * _Nonnull) content {
-    id data = self.object;
-    if(self.keyPath) {
-        data = [self.object valueForKeyPath:self.keyPath];
+    if (self.configurations.count > 1) {
+        return @[];
+    }
+    RDSObjectControllerConfiguration* configuration = self.configurations.firstObject;
+    id data = configuration.object;
+    if(configuration.keyPath) {
+        data = [configuration.object valueForKeyPath:configuration.keyPath];
     }
     if ([data isKindOfClass:[NSSet class]]) {
         return [(NSSet*)data allObjects];
@@ -65,7 +83,8 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
     _tableView.delegate = _arrayController;
 }
 
-- (NSArray*) viewModelWithContent:(NSArray*) content {
+- (NSArray*) viewModel {
+    NSArray* content = [self content];
     NSMutableArray* viewModel = [NSMutableArray arrayWithCapacity:content.count];
     for (id object in content) {
             [viewModel addObject:[NSDictionary itemWithCell:RDSArrayViewControllerCellKey
@@ -75,24 +94,33 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 }
 
 - (void)reloadViewModel {
-    _arrayController.viewModel = [self viewModelWithContent:[self content]];
+    _arrayController.viewModel = [self viewModel];
 }
 
-- (void)fetchDataAndReload {
+- (void)fetchDataAndReloadViewModel {
     __weak typeof(self.view) weakView = self.view;
     __weak typeof(self) weakSelf = self;
-    [self.object fetch:self.keyPath
-           withSuccess:^(id  _Nonnull responseObject, NSInteger newObjects) {
-               [weakSelf reloadViewModel];
-           } failure:^(NSError * _Nullable error) {
-               [RDSToastNotification showToastInViewController:weakSelf
-                                                       message:@"Refreshing data failed."
-                                               backgroundColor:UIColorFromHex(0xF0B67F)
-                                                      duration:3.0
-                                                      tapBlock:^{
-                                                          
-                                                      }];
-           }];
+    for (RDSObjectControllerConfiguration* configuration in self.configurations) {
+        [configuration.object fetch:configuration.keyPath
+               withSuccess:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                   [weakSelf reloadViewModel];
+               } failure:^(NSError * _Nullable error) {
+                   [RDSToastNotification showToastInViewController:weakSelf
+                                                           message:@"Refreshing data failed."
+                                                   backgroundColor:UIColorFromHex(0xF0B67F)
+                                                          duration:3.0
+                                                          tapBlock:^{
+                                                              
+                                                          }];
+               }];
+    }
 }
 
+- (void)setStaticCellHeight:(BOOL)staticCellHeight {
+    _arrayController.staticCellHeight = staticCellHeight;
+}
+
+- (BOOL)staticCellHeight {
+    return _arrayController.staticCellHeight;
+}
 @end

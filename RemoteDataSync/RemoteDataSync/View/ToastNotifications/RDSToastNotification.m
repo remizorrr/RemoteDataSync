@@ -3,7 +3,7 @@
 //  Tella
 //
 //  Created by Anton Remizov on 6/22/16.
-//  Copyright © 2016 PocketStoic. All rights reserved.
+//  Copyright © 2016 Appcoming. All rights reserved.
 //
 
 #import "RDSToastNotification.h"
@@ -11,21 +11,37 @@
 @implementation RDSToastNotification
 
 + (void) showToastInViewController:(UIViewController*)viewController message:(NSString*)message backgroundColor:(UIColor*)color duration:(NSTimeInterval)duration tapBlock:(void(^)())tapBlock {
-    CGRect frame = CGRectMake(0, -50.0, CGRectGetWidth(viewController.navigationController.view.frame), 50.0);
+    CGFloat barHeight = 30.0;
+    CGRect frame = CGRectMake(0, CGRectGetMaxY(viewController.navigationController.navigationBar.frame) - barHeight, CGRectGetWidth(viewController.navigationController.view.frame), barHeight);
+    if (viewController.navigationController.navigationBar.hidden) {
+        frame.origin.y = -barHeight;
+    }
     CGRect visibleFrame = frame;
     visibleFrame.origin.y = viewController.navigationController?CGRectGetMaxY(viewController.navigationController.navigationBar.frame):0;
+    if (viewController.navigationController.navigationBar.hidden) {
+        visibleFrame.origin.y = 0;
+    }
     UILabel* toastView = [[UILabel alloc] initWithFrame:frame];
     toastView.text = message;
     toastView.textColor = [UIColor whiteColor];
     toastView.textAlignment = NSTextAlignmentCenter;
-    [viewController.view addSubview:toastView];
     toastView.backgroundColor = color;
+    toastView.alpha = 0.0;
+    if (viewController.navigationController.navigationBar.hidden) {
+        [viewController.navigationController.view addSubview:toastView];
+    } else {
+        [viewController.navigationController.navigationBar.superview insertSubview:toastView
+                                                                      belowSubview:viewController.navigationController.navigationBar];
+    }
+
     [UIView animateWithDuration:0.4 animations:^{
         toastView.frame = visibleFrame;
+        toastView.alpha = 1.0;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.4 delay:duration options:0
                          animations:^{
                              toastView.frame = frame;
+                             toastView.alpha = 0.0;
                          } completion:^(BOOL finished) {
                              [toastView removeFromSuperview];
                          }];
