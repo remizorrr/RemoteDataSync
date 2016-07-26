@@ -15,6 +15,8 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 @interface RDSArrayViewController ()
 {
     ACController* _arrayController;
+    ACCollectionController* _collectionArrayController;
+    NSMutableArray<RDSObjectControllerConfiguration*>* _paginatedConfigurations;
 }
 @end
 
@@ -40,9 +42,22 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 
 - (void) setupInitialData {
     _arrayController = [ACController new];
+    _collectionArrayController = [ACCollectionController new];
+    _paginatedConfigurations = [NSMutableArray array];
+    _arrayController.didScrollBlock = ^(UIScrollView* scrollView) {
+        if (scrollView.contentOffset.y > scrollView.contentSize.height - 2.0 * scrollView.frame.size.height) {
+            [self fetchNewPage];
+        }
+    };
+    _collectionArrayController.didScrollBlock = ^(UIScrollView* scrollView) {
+        if (scrollView.contentOffset.y > scrollView.contentSize.height - 2.0 * scrollView.frame.size.height) {
+            [self fetchNewPage];
+        }
+    };
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self reloadViewModel];
     [self fetchDataAndReloadViewModel];
 }
@@ -55,6 +70,98 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Public Methods
+
+- (void) addPaginatedConfigurationWithObject:(NSManagedObject* _Nonnull )object keyPath:( NSString* _Nullable )keypath {
+    RDSObjectControllerConfiguration* configuration = [RDSObjectControllerConfiguration new];
+    configuration.object = object;
+    configuration.keyPath = keypath;
+    [_paginatedConfigurations addObject:configuration];
+}
+
+- (NSArray*) viewModel {
+    NSArray* content = [self content];
+    NSMutableArray* viewModel = [NSMutableArray arrayWithCapacity:content.count];
+    for (__unused id object in content) {
+        [viewModel addObject:[NSDictionary itemWithCell:RDSArrayViewControllerCellKey
+                                                 size:CGSizeMake(0, 100.0)]];
+    }
+    return viewModel.copy;
+}
+
+- (void)reloadViewModel {
+    if (self.tableView) {
+        _arrayController.viewModel = [self viewModel];
+    } else if (self.collectionView) {
+        _collectionArrayController.viewModel = [self viewModel];
+    }
+}
+
+- (void)fetchDataAndReloadViewModel {
+    __weak typeof(self) weakSelf = self;
+    for (RDSObjectControllerConfiguration* configuration in self.configurations) {
+        [configuration.object remoteCallWithScheme:RDSRequestSchemeFetch
+                                            forKey:configuration.keyPath
+                                    withParameters:nil
+                                   byReplacingData:YES
+                                           success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [weakSelf reloadViewModel];
+                                           } failure:^(NSError * _Nullable error) {
+                                               [RDSToastNotification showToastInViewController:weakSelf
+                                                                                       message:@"Refreshing data failed."
+                                                                               backgroundColor:UIColorFromHex(0xF0B67F)
+                                                                                      duration:3.0
+                                                                                      tapBlock:^{
+                                                                                          
+                                                                                      }];
+                                           }];
+    }
+    for (RDSObjectControllerConfiguration* configuration in _paginatedConfigurations) {
+        [configuration.object remoteCallWithScheme:RDSRequestSchemeFetch
+                                            forKey:configuration.keyPath
+                                    withParameters:nil
+                                   byReplacingData:YES
+                                           success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [weakSelf reloadViewModel];
+                                           } failure:^(NSError * _Nullable error) {
+                                               [RDSToastNotification showToastInViewController:weakSelf
+                                                                                       message:@"Refreshing data failed."
+                                                                               backgroundColor:UIColorFromHex(0xF0B67F)
+                                                                                      duration:3.0
+                                                                                      tapBlock:^{
+                                                                                          
+                                                                                      }];
+                                           }];
+    }
+}
+
+- (void) fetchNewPage {
+    __weak typeof(self) weakSelf = self;
+    for (RDSObjectControllerConfiguration* configuration in _paginatedConfigurations) {
+        [configuration.object remoteCallWithScheme:RDSRequestSchemeFetch
+                                            forKey:configuration.keyPath
+                                    withParameters:nil
+                                   byReplacingData:NO
+                                           success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [weakSelf reloadViewModel];
+                                           } failure:^(NSError * _Nullable error) {
+                                               [RDSToastNotification showToastInViewController:weakSelf
+                                                                                       message:@"Fetching new page failed."
+                                                                               backgroundColor:UIColorFromHex(0xF0B67F)
+                                                                                      duration:3.0
+                                                                                      tapBlock:^{
+                                                                                          
+                                                                                      }];
+                                           }];
+    }
+}
+
+#pragma mark -
+
+- (NSArray<RDSObjectControllerConfiguration*>*) allConfigurations {
+    return [self.configurations arrayByAddingObjectsFromArray:_paginatedConfigurations];
 }
 
 - (NSArray * _Nonnull) content {
@@ -83,37 +190,11 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
     _tableView.delegate = _arrayController;
 }
 
-- (NSArray*) viewModel {
-    NSArray* content = [self content];
-    NSMutableArray* viewModel = [NSMutableArray arrayWithCapacity:content.count];
-    for (id object in content) {
-            [viewModel addObject:[NSDictionary itemWithCell:RDSArrayViewControllerCellKey
-                                                     height:100.0]];
-    }
-    return viewModel.copy;
-}
-
-- (void)reloadViewModel {
-    _arrayController.viewModel = [self viewModel];
-}
-
-- (void)fetchDataAndReloadViewModel {
-    __weak typeof(self.view) weakView = self.view;
-    __weak typeof(self) weakSelf = self;
-    for (RDSObjectControllerConfiguration* configuration in self.configurations) {
-        [configuration.object fetch:configuration.keyPath
-               withSuccess:^(id  _Nonnull responseObject, NSInteger newObjects) {
-                   [weakSelf reloadViewModel];
-               } failure:^(NSError * _Nullable error) {
-                   [RDSToastNotification showToastInViewController:weakSelf
-                                                           message:@"Refreshing data failed."
-                                                   backgroundColor:UIColorFromHex(0xF0B67F)
-                                                          duration:3.0
-                                                          tapBlock:^{
-                                                              
-                                                          }];
-               }];
-    }
+- (void)setCollectionView:(UICollectionView *)collectionView {
+    _collectionView = collectionView;
+    _collectionArrayController.collection = _collectionView;
+    _collectionView.dataSource = _collectionArrayController;
+    _collectionView.delegate = _collectionArrayController;
 }
 
 - (void)setStaticCellHeight:(BOOL)staticCellHeight {
@@ -123,4 +204,5 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 - (BOOL)staticCellHeight {
     return _arrayController.staticCellHeight;
 }
+
 @end

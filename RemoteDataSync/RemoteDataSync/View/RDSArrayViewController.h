@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "ACController.h"
+#import "ACCollectionController.h"
 #import "RDSObjectViewController.h"
 
 extern NSString* RDSArrayViewControllerCellKey;
 
-@interface RDSArrayViewController : RDSObjectViewController <UITableViewDataSource>
+@interface RDSArrayViewController : RDSObjectViewController
 
+@property (nonatomic, strong) IBOutlet UICollectionView* collectionView;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) BOOL staticCellHeight;
 
@@ -24,5 +26,12 @@ extern NSString* RDSArrayViewControllerCellKey;
 - (NSArray*) viewModel;
 - (void)fetchDataAndReloadViewModel;
 - (void)reloadViewModel;
+
+/**
+ * if a paginatedConfiguration is added, on reaching the end of a tableview 
+ * the paginated configuration request will be triggered and on completion,
+ * the view model will be requested.
+ */
+- (void) addPaginatedConfigurationWithObject:(NSManagedObject* _Nonnull )object keyPath:( NSString* _Nullable )keypath;
 
 @end

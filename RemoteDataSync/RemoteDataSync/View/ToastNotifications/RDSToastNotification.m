@@ -11,6 +11,8 @@
 @implementation RDSToastNotification
 
 + (void) showToastInViewController:(UIViewController*)viewController message:(NSString*)message backgroundColor:(UIColor*)color duration:(NSTimeInterval)duration tapBlock:(void(^)())tapBlock {
+    static UIWindow* window = nil;
+
     CGFloat barHeight = 30.0;
     CGRect frame = CGRectMake(0, CGRectGetMaxY(viewController.navigationController.navigationBar.frame) - barHeight, CGRectGetWidth(viewController.navigationController.view.frame), barHeight);
     if (viewController.navigationController.navigationBar.hidden) {
@@ -28,7 +30,10 @@
     toastView.backgroundColor = color;
     toastView.alpha = 0.0;
     if (viewController.navigationController.navigationBar.hidden) {
-        [viewController.navigationController.view addSubview:toastView];
+        window = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, viewController.view.window.frame.size.width, barHeight)];
+        window.windowLevel = UIWindowLevelStatusBar;
+        [window makeKeyAndVisible];
+        [window addSubview:toastView];
     } else {
         [viewController.navigationController.navigationBar.superview insertSubview:toastView
                                                                       belowSubview:viewController.navigationController.navigationBar];
@@ -44,6 +49,7 @@
                              toastView.alpha = 0.0;
                          } completion:^(BOOL finished) {
                              [toastView removeFromSuperview];
+                             window = nil;
                          }];
     }];
 }

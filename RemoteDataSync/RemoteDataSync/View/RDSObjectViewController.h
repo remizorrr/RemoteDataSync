@@ -15,11 +15,7 @@
 
 @property (nonatomic, strong) RDSManager* _Nonnull rdsManager;
 @property (nonatomic, strong, readonly) NSArray<RDSObjectControllerConfiguration*>* _Nonnull configurations;
+
 - (void) addConfigurationWithObject:(NSManagedObject* _Nonnull )object keyPath:( NSString* _Nullable )keypath;
 
-@end
-
-@interface RDSObjectControllerConfiguration : NSObject
-@property (nonatomic, strong) NSManagedObject* _Nonnull object;
-@property (nonatomic, strong) NSString* _Nonnull keyPath;
 @end

@@ -21,10 +21,23 @@
 {
     self = [super init];
     if (self) {
-        self.rdsManager = [RDSManager defaultManager];
-        _configurations = [NSMutableArray array];
+        [self setup];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (void) setup {
+    self.rdsManager = [RDSManager defaultManager];
+    _configurations = [NSMutableArray array];
 }
 
 - (void)viewDidLoad {
@@ -45,5 +58,3 @@
 }
 
 @end
-
-@implementation RDSObjectControllerConfiguration @end
