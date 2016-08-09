@@ -10,11 +10,13 @@
 #import "RDSMappingProvider.h"
 #import "RDSDataStore.h"
 #import <CoreData/CoreData.h>
+#import "RDSObjectCache.h"
 
 @interface RDSObjectFactory : NSObject
 
 @property (nonatomic, strong) id<RDSMappingProvider> mappingProvider;
 @property (nonatomic, strong) id<RDSDataStore> dataStore;
+@property (nonatomic, strong) id<RDSObjectCache> objectCache;
 
 - (void) prefillCache;
 - (void) fillObject:(id)object fromData:(id<NSObject>)data;

@@ -10,6 +10,7 @@
 #import "RDSCoreDataStore.h"
 #import "RDSAFNetworkConnector.h"
 #import "RDSDictionaryRequestConfigurator.h"
+#import "RDSObjectFactoryCache.h"
 
 @implementation RDSManager
 
@@ -38,7 +39,11 @@
     self.configurator = [RDSDictionaryRequestConfigurator new];
     self.mappingProvider = [RDSMappingStore new];
     self.objectFactory = [RDSObjectFactory new];
+    self.objectCache = [RDSObjectFactoryCache new];
     self.objectFactory.mappingProvider = self.mappingProvider;
     self.objectFactory.dataStore = self.dataStore;
+    self.objectFactory.objectCache = self.objectCache;
+    self.dataStore.objectCache = self.objectCache;
+    self.dataStore.mappingProvider = self.mappingProvider;
 }
 @end

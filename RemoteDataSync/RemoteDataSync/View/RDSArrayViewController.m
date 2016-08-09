@@ -107,6 +107,7 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
                                     withParameters:nil
                                    byReplacingData:YES
                                            success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [[RDSManager defaultManager].dataStore save];
                                                [weakSelf reloadViewModel];
                                            } failure:^(NSError * _Nullable error) {
                                                [RDSToastNotification showToastInViewController:weakSelf
@@ -124,6 +125,7 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
                                     withParameters:nil
                                    byReplacingData:YES
                                            success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [[RDSManager defaultManager].dataStore save];
                                                [weakSelf reloadViewModel];
                                            } failure:^(NSError * _Nullable error) {
                                                [RDSToastNotification showToastInViewController:weakSelf
@@ -145,6 +147,7 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
                                     withParameters:nil
                                    byReplacingData:NO
                                            success:^(id  _Nonnull responseObject, NSInteger newObjects) {
+                                               [[RDSManager defaultManager].dataStore save];
                                                [weakSelf reloadViewModel];
                                            } failure:^(NSError * _Nullable error) {
                                                [RDSToastNotification showToastInViewController:weakSelf

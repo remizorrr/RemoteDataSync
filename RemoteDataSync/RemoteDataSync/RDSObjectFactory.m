@@ -29,7 +29,6 @@
     self = [super init];
     if (self) {
         _cachedTypes = [NSMutableSet set];
-        _objectCache = [RDSObjectFactoryCache new];
         [self prefillCache];
     }
     return self;
@@ -188,7 +187,8 @@
 
     if (replace) {
         for (NSManagedObject* item in itemsToDelete) {
-            [self.dataStore deleteObject:item];
+//            [self.dataStore deleteObject:item];
+// We don't want to delete these objects to keep them in cache.
         }
     }
 

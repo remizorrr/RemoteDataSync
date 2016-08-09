@@ -46,7 +46,7 @@
                                                             success:^(id response) {
                                                                 NSInteger newObjects = 0;
                                                                 if (keyName) {
-                                                                    newObjects = [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:configuration.replace];
+                                                                    newObjects = [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:replace];
                                                                 } else {
                                                                     [[RDSManager defaultManager].objectFactory fillObject:self
                                                                                                                  fromData:response];

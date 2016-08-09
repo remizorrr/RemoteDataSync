@@ -13,6 +13,7 @@
 #import "RDSMappingStore.h"
 #import "RDSMappingProvider.h"
 #import "RDSObjectFactory.h"
+#import "RDSObjectCache.h"
 
 @interface RDSManager : NSObject
 
@@ -20,6 +21,7 @@
 @property (nonatomic,strong) id<RDSNetworkConnector> networkConnector;
 @property (nonatomic,strong) id<RDSRequestConfigurator> configurator;
 @property (nonatomic,strong) id<RDSMappingProvider> mappingProvider;
+@property (nonatomic,strong) id<RDSObjectCache> objectCache;
 @property (nonatomic,strong) RDSObjectFactory* objectFactory;
 
 + (instancetype) defaultManager;

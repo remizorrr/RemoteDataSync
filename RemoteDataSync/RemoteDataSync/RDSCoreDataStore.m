@@ -14,19 +14,19 @@
     NSManagedObjectContext * _managedObjectContext;
     NSManagedObjectModel* _managedObjectModel;
     NSPersistentStoreCoordinator* _persistentStoreCoordinator;
-    RDSObjectFactoryCache* _objectCache;
     NSMutableArray<NSManagedObject*>* _scheduledForDeletion;
 }
 @end
 
 @implementation RDSCoreDataStore
+@synthesize objectCache = _objectCache;
+@synthesize mappingProvider = _mappingProvider;
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         self.cleanupOnMergeError = YES;
-        _objectCache = [RDSObjectFactoryCache new];
         _scheduledForDeletion = [NSMutableArray array];
     }
     return self;
@@ -154,13 +154,15 @@
 }
 
 - (void) deleteObject:(id)object {
+    RDSMapping* mapping = [self.mappingProvider mappingForType:[object class]];
+    [self.objectCache removeObjectOfType:object ForKey:mapping.primaryKey];
     [self.managedObjectContext deleteObject:object];
 }
 
 - (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key {
     id object = [_objectCache cachedObjectOfType:type withValue:value forKey:key];
     if (object) {
-        return object;
+        return @[object];
     }
     return [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
 }

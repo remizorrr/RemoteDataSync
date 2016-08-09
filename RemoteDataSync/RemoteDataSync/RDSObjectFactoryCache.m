@@ -29,7 +29,9 @@
 {
     NSDictionary* cachedObjectsByType = cache[type];
     NSDictionary* cachedObjectsByKey = cachedObjectsByType[key];
-    return cachedObjectsByKey[value];
+    NSString* keyValue = [(id)value isKindOfClass:[NSNumber class]]?[(id)value stringValue]:
+    ([(id)value isKindOfClass:[NSString class]]?value:nil);
+    return cachedObjectsByKey[keyValue];
 }
 
 - (void) cacheObject:(id)object forKey:(NSString*)key

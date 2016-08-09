@@ -7,8 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RDSObjectCache.h"
+#import "RDSMappingProvider.h"
 
 @protocol RDSDataStore <NSObject>
+
+@property (nonatomic, strong) id<RDSObjectCache> objectCache;
+@property (nonatomic, strong) id<RDSMappingProvider> mappingProvider;
 
 - (id) createUniqueObjectOfType:(NSString*)type;
 - (id) createObjectOfType:(NSString*)type;
