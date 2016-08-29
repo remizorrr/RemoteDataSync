@@ -233,5 +233,10 @@
     return (BOOL)propertyDescription;
 }
 
+- (BOOL) canStoreObject:(id)object {
+    return [object isKindOfClass:[NSManagedObject class]];
+}
+
+
 
 @end

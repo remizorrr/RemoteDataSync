@@ -10,4 +10,7 @@
 
 @implementation NSObject (RDS)
 
+- (void) markState:(RDSManagedObjectState)state {
+}
+
 @end

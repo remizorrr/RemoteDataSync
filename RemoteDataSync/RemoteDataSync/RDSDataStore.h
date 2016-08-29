@@ -27,5 +27,6 @@
 - (void) scheduleObjectDeletion:(id)object;
 - (NSArray*) objectsScheduledForDeletion;
 - (BOOL) object:(id)object hasProperty:(NSString*)property;
+- (BOOL) canStoreObject:(id)object;
 
 @end
