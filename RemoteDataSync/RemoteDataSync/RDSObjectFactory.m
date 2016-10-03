@@ -201,9 +201,13 @@
 }
 
 - (NSInteger) fillRelationshipOnManagedObject:(NSManagedObject*)object withKey:(NSString*)key fromData:(NSArray*)data byReplacingData:(BOOL)replace{
-    NSRelationshipDescription* property = object.entity.propertiesByName[key];
-    Class type = NSClassFromString(((NSRelationshipDescription*)property).destinationEntity.name);
-    return [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data byReplacingData:replace];
+    NSRelationshipDescription* property = object.entity.relationshipsByName[key];
+    if (property) {
+        Class type = NSClassFromString(property.destinationEntity.name);
+        return [self fillRelationshipOnObject:object withKey:key itemsType:type fromData:data byReplacingData:replace];
+    } else {
+        return 0;
+    }
 }
 
 - (NSInteger) fillRelationshipOnObject:(id)object withKey:(NSString*)key itemsType:(Class)type fromData:(NSArray*)data byReplacingData:(BOOL)replace{

@@ -48,10 +48,16 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
         if (scrollView.contentOffset.y > scrollView.contentSize.height - 2.0 * scrollView.frame.size.height) {
             [self fetchNewPage];
         }
+        if (self.didScrollBlock) {
+            self.didScrollBlock(scrollView);
+        }
     };
     _collectionArrayController.didScrollBlock = ^(UIScrollView* scrollView) {
         if (scrollView.contentOffset.y > scrollView.contentSize.height - 2.0 * scrollView.frame.size.height) {
             [self fetchNewPage];
+        }
+        if (self.didScrollBlock) {
+            self.didScrollBlock(scrollView);
         }
     };
 }

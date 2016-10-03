@@ -18,6 +18,7 @@ extern NSString* RDSArrayViewControllerCellKey;
 @property (nonatomic, strong) IBOutlet UICollectionView* collectionView;
 @property (nonatomic, strong) IBOutlet UITableView* tableView;
 @property (nonatomic, assign) BOOL staticCellHeight;
+@property (nonatomic, copy) void(^didScrollBlock)(UIScrollView* scrollView) ;
 
 /**
  * The Default view model is a cell with a key RDSArrayViewControllerCellKey for each data item.
