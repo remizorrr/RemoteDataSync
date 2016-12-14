@@ -25,12 +25,12 @@
     return self;
 }
 
-- (id) cachedObjectOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key
+- (id) cachedObjectOfType:(NSString*)type withValue:(id<NSCopying,NSObject>)value forKey:(NSString*)key
 {
     NSDictionary* cachedObjectsByType = cache[type];
     NSDictionary* cachedObjectsByKey = cachedObjectsByType[key];
-    NSString* keyValue = [(id)value isKindOfClass:[NSNumber class]]?[(id)value stringValue]:
-    ([(id)value isKindOfClass:[NSString class]]?value:nil);
+    NSString* keyValue = (NSString*)([value isKindOfClass:[NSNumber class]]?[(NSNumber*)value stringValue]:
+    ([(NSString*)value isKindOfClass:[NSString class]]?(NSString*)value:nil));
     return cachedObjectsByKey[keyValue];
 }
 

@@ -10,6 +10,7 @@
 #import "RemoteDataSync.h"
 #import "RDSToastNotification.h"
 #import "UIColor+Hex.h"
+
 NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 
 @interface RDSArrayViewController ()
