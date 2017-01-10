@@ -11,6 +11,8 @@
 #import "ACCollectionController.h"
 #import "RDSObjectViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString* RDSArrayViewControllerCellKey;
 
 @interface RDSArrayViewController : RDSObjectViewController
@@ -38,3 +40,5 @@ extern NSString* RDSArrayViewControllerCellKey;
 - (void) addPaginatedConfigurationWithObject:(NSManagedObject* _Nonnull )object keyPath:( NSString* _Nullable )keypath;
 
 @end
+
+NS_ASSUME_NONNULL_END

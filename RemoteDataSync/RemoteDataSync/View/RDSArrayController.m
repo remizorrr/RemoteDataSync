@@ -154,6 +154,9 @@ NSString* RDSArrayControllerCellKey = @"RDSArrayControllerCellKey";
     if (fetching) {
         return;
     }
+    if (!_paginatedConfigurations.count) {
+        return;
+    }
     fetching = YES;
     __block NSInteger fetchCount = 0;
     for (RDSObjectControllerPaginatedConfiguration* configuration in _paginatedConfigurations) {

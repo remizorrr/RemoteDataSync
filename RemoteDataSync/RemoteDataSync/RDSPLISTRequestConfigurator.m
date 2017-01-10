@@ -16,18 +16,17 @@
 
 @implementation RDSPLISTRequestConfigurator
 
-- (RDSRequestConfiguration*) configurationForObject:(id)object key:(NSString*)key {
+- (RDSRequestConfiguration*) configurationForObject:(id)object keyPath:(NSString*)keyPath scheme:(NSString*)scheme {
     NSDictionary* configurationsForObject = configurationsByType[NSStringFromClass([object class])];
-    return configurationsForObject[key];
+    return configurationsForObject[keyPath];
 }
 
 - (void) loadPLIST {
     NSMutableDictionary* mutableConfigurations = [NSMutableDictionary dictionary];
-    NSDictionary* plistDictionary = [NSDictionary dictionaryWithContentsOfFile:self.plistFilePath];
-    for (NSString* type in plistDictionary) {
-        
-    }
     configurationsByType = mutableConfigurations.copy;
+}
+
+- (void) addConfiguration:(RDSRequestConfiguration*)configuration forType:(Class)type keyPath:(NSString*)keyPath sheme:(NSString*)scheme {
 }
 
 @end

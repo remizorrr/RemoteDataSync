@@ -27,7 +27,6 @@
         const char *tmpPropertyName = property_getName(tmpProperties[i]);
         
         const char * type = property_getAttributes(property);
-        NSString *attr = [NSString stringWithCString:type encoding:NSUTF8StringEncoding];
         
         NSString * typeString = [self typeForProperty:property];
         
@@ -41,9 +40,7 @@
 
 - (NSString*) typeForProperty:(objc_property_t)property {
     const char * name = property_getName(property);
-    NSString *propertyName = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
     const char * type = property_getAttributes(property);
-    NSString *attr = [NSString stringWithCString:type encoding:NSUTF8StringEncoding];
     
     NSString * typeString = [NSString stringWithUTF8String:type];
     NSArray * attributes = [typeString componentsSeparatedByString:@","];
