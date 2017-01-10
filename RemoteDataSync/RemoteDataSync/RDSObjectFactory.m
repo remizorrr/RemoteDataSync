@@ -256,8 +256,6 @@
 
     if (replace) {
         for (NSManagedObject* item in itemsToDelete) {
-//            [self.dataStore deleteObject:item];
-// We don't want to delete these objects to keep them in cache.
         }
     }
 

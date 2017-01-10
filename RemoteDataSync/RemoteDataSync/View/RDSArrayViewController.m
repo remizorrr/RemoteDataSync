@@ -15,7 +15,6 @@ NSString* RDSArrayViewControllerCellKey = @"RDSArrayViewControllerCellKey";
 @interface RDSArrayViewController ()
 {
     ACController* _arrayController;
-    ACCollectionController* _collectionArrayController;
     NSMutableArray<RDSObjectControllerConfiguration*>* _paginatedConfigurations;
 }
 @end
