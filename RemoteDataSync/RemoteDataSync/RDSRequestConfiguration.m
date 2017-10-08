@@ -24,4 +24,11 @@ NSString * const RDSRequestSchemeRemove = @"RDSRequestSchemeRemove";
     return self;
 }
 
+- (void) performWithObject:(id)object
+            withParameters:(nullable NSDictionary*)parameters
+                   success:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success
+                   failure:(nullable void (^)(NSError* __nullable error))failure {
+    NSLog(@"This is an abstract class. This method should be implemented in ancestors");
+}
+
 @end

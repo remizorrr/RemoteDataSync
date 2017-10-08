@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RDSRequestConfiguration.h"
+#import "RDSKeypathRequestConfiguration.h"
+
 @protocol RDSNetworkConnector <NSObject>
 
 @property (nonatomic, strong) NSURL* baseURL;
@@ -17,7 +18,7 @@
 @property (nonatomic, copy) void(^errorProcess)(id response, NSError* error);
 
 - (id)dataTaskForObject:(id) object
-                          withConfiguration:(RDSRequestConfiguration*) configuration
+                          withConfiguration:(RDSKeypathRequestConfiguration*) configuration
                        additionalParameters:(NSDictionary*)parameters
                                     success:(void (^)(id))success
                                     failure:(void (^)(NSError *))failure;

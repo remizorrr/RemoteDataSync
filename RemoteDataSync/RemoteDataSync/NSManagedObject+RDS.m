@@ -39,28 +39,11 @@
     RDSRequestConfiguration* configuration = [[RDSManager defaultManager].configurator configurationForObject:self
                                                                                                       keyPath:keyName
                                                                                                        scheme:scheme];
-    NSURLSessionDataTask* task =
-    [[RDSManager defaultManager].networkConnector dataTaskForObject:self
-                                                  withConfiguration:configuration
-                                               additionalParameters:parameters
-                                                            success:^(id response) {
-                                                                NSInteger newObjects = 0;
-                                                                if (keyName) {
-                                                                    newObjects = [[RDSManager defaultManager].objectFactory fillRelationshipOnManagedObject:self withKey:keyName fromData:response byReplacingData:replace];
-                                                                } else {
-                                                                    [[RDSManager defaultManager].objectFactory fillObject:self
-                                                                                                                 fromData:response];
-                                                                }
-                                                                if(success) {
-                                                                    success(response, newObjects);
-                                                                }
-                                                            } failure:^(NSError *error) {
-                                                                if(failure) {
-                                                                    failure(error);
-                                                                }
-                                                            }];
-    [task resume];
-    
+    [configuration performWithObject:self
+                             keyName:keyName
+                      withParameters:parameters
+                             success:success
+                             failure:failure];
 }
 
 - (void) remoteSyncWithSuccess:(nullable void (^)(id __nonnull responseObject, NSInteger newObjects))success

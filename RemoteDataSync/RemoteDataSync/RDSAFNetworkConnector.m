@@ -29,7 +29,7 @@
 }
 
 - (AFHTTPRequestOperation *)dataTaskForObject:(id) object
-                          withConfiguration:(RDSRequestConfiguration*) configuration
+                          withConfiguration:(RDSKeypathRequestConfiguration*) configuration
                        additionalParameters:(NSDictionary*)parameters
                                     success:(void (^)(id)) success
                                     failure:(void (^)(NSError *))failure
@@ -108,7 +108,7 @@
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@ - %@",operation, [[NSString alloc]initWithData:operation.responseData encoding:NSUTF8StringEncoding]);
-
+        error = [[NSError alloc] initWithDomain:error.domain code:operation.response.statusCode userInfo:error.userInfo];
         if (self.errorProcess) {
             self.errorProcess(operation.responseData, error);
         }
