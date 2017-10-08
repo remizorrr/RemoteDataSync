@@ -159,12 +159,34 @@
     [self.managedObjectContext deleteObject:object];
 }
 
+- (void) deleteObjectsOfType:(NSString*)type {
+    NSBatchDeleteRequest* deleteRequest =
+    [[NSBatchDeleteRequest alloc] initWithFetchRequest:[NSFetchRequest fetchRequestWithEntityName:type]];
+    NSError* error = nil;
+    if(![self.persistentStoreCoordinator executeRequest:deleteRequest
+                                        withContext:self.managedObjectContext
+                                                  error:&error]) {
+        NSLog(@"Error deleting objects of type %@: %@", type, error);
+    }
+}
+
+
 - (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key {
+    return [self objectsOfType:type withValue:value forKey:key create:NO];
+}
+
+- (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key create:(BOOL)create {
     id object = [_objectCache cachedObjectOfType:type withValue:value forKey:key];
     if (object) {
         return @[object];
     }
-    return [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
+    NSArray* objects = [self objectsOfType:type forPredicate:[NSPredicate predicateWithFormat:@"%K = %@",key,value]];
+    if (!objects.count && create) {
+        id object = [self createObjectOfType:type];
+        [object setValue:value forKey:key];
+        objects = @[object];
+    }
+    return objects;
 }
 
 

@@ -18,8 +18,10 @@
 - (id) createUniqueObjectOfType:(NSString*)type;
 - (id) createObjectOfType:(NSString*)type;
 - (void) deleteObject:(id)object;
+- (void) deleteObjectsOfType:(NSString*)object;
 - (NSArray*) objectsOfType:(NSString*)type;
-- (NSArray*) objectsOfType:(NSString*)type withValue:(NSString*)value forKey:(NSString*)key;
+- (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key;
+- (NSArray*) objectsOfType:(NSString*)type withValue:(id<NSCopying>)value forKey:(NSString*)key create:(BOOL)create;
 - (NSArray*) objectsOfType:(NSString*)type forPredicate:(NSPredicate*) predicate;
 - (void) save;
 - (void) revert;
